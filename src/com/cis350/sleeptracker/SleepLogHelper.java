@@ -12,7 +12,7 @@ public class SleepLogHelper {
 	private static final String TAG = "SleepLogHelper";
 	private static final int TABLE_VERSION = 4;
 	private static final String TABLE_NAME = "sleep_log";
-	
+	//heoo
 	// COLUMNS
 	protected static final String ASLEEP_TIME = "asleep_time";
 	protected static final String AWAKE_TIME = "awake_time";
