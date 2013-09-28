@@ -47,6 +47,14 @@ public class LogActivity extends Activity {
 			mLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color));
 		}
 		mAsleepTime = getIntent().getLongExtra(DataActivity.ITEM_ASLEEP_TIME_LONG, 0);
+		/*
+		 * maybe we can add some extra code here to make the app  decides whether it is a sleep
+		 * or nap in default? so when the prompt asking the user to choose whether it is a nap or sleep,
+		 * we could have a third button as "NA", if the user choose NA, we could use this default value?
+		 * this may lead to some modification for SleepLogHelper.java as well, not sure if that's reasonable.
+		 * since we have SleepLogHelper.NAP=1 and sleep as 0, maybe can use -1 for NA?
+		 */
+		
 		mAwakeTime = 0;
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
