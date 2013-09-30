@@ -42,6 +42,10 @@ public class MainActivity extends Activity {
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
+		
+		/*this is where we need to change the background color to add the sleeping atmosphere, sort of.
+		 * and also a few spots we need to manage the color below.
+		 */
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
 			mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
@@ -66,6 +70,15 @@ public class MainActivity extends Activity {
 	 * So if the last date recorded is not the current date, the next tip in the array should be returned.
 	 * Otherwise, the tip at the saved position of the array should be returned.
 	 */
+	
+	/* I guess we need to modified this, maybe the data structure of the tips? Since we should customize 
+	 * user's tips based on their records. Maybe hashmap? keys would be excuses and value would be the
+	 * corresponding String[]? so that we could pick corresponding tips from different arrays based on 
+	 * the excuse the user gave last day, or one of the excuses if several were given? While if so, it may
+	 * be relatively hard to keep several TIP_POSITION as what was doing below, maybe just random the index
+	 * of tips we pick from the array? Just personal thinking:)
+	 */
+	
 	private String getTip(String[] tips) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());

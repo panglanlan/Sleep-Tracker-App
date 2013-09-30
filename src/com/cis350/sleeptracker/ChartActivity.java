@@ -38,6 +38,7 @@ public class ChartActivity extends Activity{
 
 	private static final String[] EXCUSE_STRINGS = {"CAFFEINE", "ALCOHOL", "NICOTINE", "SUGAR",
 		"SCREEN TIME", "EXERCISE"};
+		//maybe we can add a little more excuse_strings here?
 	
 	private long today, thisMonth;
 	private GraphicalView wChart, mChart, yChart;
@@ -72,10 +73,15 @@ public class ChartActivity extends Activity{
 		mSleepLogHelper = new SleepLogHelper(this);
 
 		
-		
 		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
-
+        
+        /*we already initialized the backgroundcolor to color_awake above, maybe we can just change the 
+         * below four line if-else to:
+         * if (mPreferences.getBoolean(MainActivity.IS_ASLEEP, false))
+         * 	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
+         */
+        
         if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
         	tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
         } else {
