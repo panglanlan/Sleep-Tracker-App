@@ -39,7 +39,7 @@ public class ChartActivity extends Activity{
 		"SCREEN TIME", "EXERCISE"};
 		//maybe we can add a little more excuse_strings here?
 	
-	private long today, thisMonth;
+	private long today, thisMonth;  
 	private GraphicalView wChart, mChart, yChart;
     private XYMultipleSeriesDataset mDataset = new XYMultipleSeriesDataset();
     private XYMultipleSeriesDataset wDataset = new XYMultipleSeriesDataset();
@@ -119,6 +119,7 @@ public class ChartActivity extends Activity{
         tabs.addTab(initspec("yearly", "Year",  yChart, tabs));
         tabs.addTab(initspec("excuses","Excuse Record",createExcusesTable(),tabs));  
         					//changed "Excuse Data" to "Excuse Record", hopefully sounds better.
+        setTabColor(tabs);
         
         /*TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
         spec2.setIndicator("Month");
@@ -137,7 +138,6 @@ public class ChartActivity extends Activity{
 			}
         });
         tabs.addTab(spec3);
-        
         TabHost.TabSpec spec4 = tabs.newTabSpec("excuses");
         spec4.setIndicator("Excuse Data");
         spec4.setContent(new TabHost.TabContentFactory(){
