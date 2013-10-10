@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		customizeActionBar(this);
+		((SleepTrackerApplication) this.getApplicationContext()).customizeActionBar(this);
 
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
@@ -203,17 +203,6 @@ public class MainActivity extends Activity {
 	public void onClickGraph(View view) {
 		Intent intent = new Intent(this, ChartActivity.class);
 		startActivity(intent);
-	}
-
-	public static void customizeActionBar(Activity activity) {
-		// Customize Action Bar
-		activity.getActionBar().setDisplayShowCustomEnabled(true);
-		activity.getActionBar().setDisplayShowTitleEnabled(false);
-		LayoutInflater inflator = (LayoutInflater) activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflator.inflate(R.layout.view_action_bar, null);
-		((TextView) v.findViewById(R.id.title)).setText("");
-		activity.getActionBar().setCustomView(v);
 	}
 
 	public LinearLayout getLayout() {
