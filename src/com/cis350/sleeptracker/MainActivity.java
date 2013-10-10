@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
 		Boolean wasAsleep = mPreferences.getBoolean(IS_ASLEEP, false);
 		onClickSleepOrWakeUpdatePreferencesAndInterface();
 		if (!wasAsleep) {
-			displayDialogs();
+			displayNapAndAlertDialogs();
 		} else {
 			mSleepLogHelper.insertLog(mPreferences.getLong(RECENT_SLEEP_TIME, 0),
 					System.currentTimeMillis(), mPreferences.getBoolean(IS_NAP, false));
@@ -139,19 +139,27 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	private AlertDialog buildDialog(String title, String message, String positiveMessage,
+			DialogInterface.OnClickListener positiveListener, String negativeMessage,
+			DialogInterface.OnClickListener negativeListener) {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(title);
+		dialogBuilder.setMessage(message);
+		dialogBuilder.setPositiveButton(positiveMessage, positiveListener);
+		dialogBuilder.setNegativeButton(negativeMessage, negativeListener);
+		return dialogBuilder.create();
+	}
+
 	/*
 	 * Method displays two consecutive dialogs. The first prompts the user to pick
 	 * whether he/she is going to sleep for the night or taking a nap. The second
 	 * asks the user whether he/she wants to listen to the podcast while falling
 	 * asleep.
 	 */
-	private void displayDialogs() {
-		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(this);
-		podcastDialogBuilder.setTitle(getResources().getString(
-				R.string.podcast_dialog_title));
-		podcastDialogBuilder.setMessage(getResources().getString(
-				R.string.podcast_dialog_message));
-		podcastDialogBuilder.setPositiveButton("Yes",
+	private void displayNapAndAlertDialogs() {
+		final AlertDialog podcastAlertDialog = buildDialog(getResources().getString(R.string.podcast_dialog_title),
+				getResources().getString(R.string.podcast_dialog_title),
+				"Yes",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
@@ -159,24 +167,22 @@ public class MainActivity extends Activity {
 						mPodcastPlayer.start();
 						dialog.dismiss();
 					}
-				});
-		podcastDialogBuilder.setNegativeButton("No",
+				},
+				"No",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
 				});
-		final AlertDialog podcastAlertDialog = podcastDialogBuilder.create();
 
-		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(this);
-		napDialogBuilder.setTitle(getResources().getString(
-				R.string.nap_dialog_title));
-		napDialogBuilder.setMessage(getResources().getString(
-				R.string.nap_dialog_message));
-		napDialogBuilder.setPositiveButton("Sleep", new napDialogOnClickListener(podcastAlertDialog, false));
-		napDialogBuilder.setNegativeButton("Nap", new napDialogOnClickListener(podcastAlertDialog, true));
-		AlertDialog napAlertDialog = napDialogBuilder.create();
+		final AlertDialog napAlertDialog = buildDialog(getResources().getString(R.string.nap_dialog_title),
+				getResources().getString(R.string.nap_dialog_message),
+				"Sleep",
+				new napDialogOnClickListener(podcastAlertDialog, false),
+				"Nap",
+				new napDialogOnClickListener(podcastAlertDialog, true));
+
 		napAlertDialog.show();
 	}
 
