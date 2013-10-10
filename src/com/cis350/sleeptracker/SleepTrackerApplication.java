@@ -3,6 +3,8 @@
  */
 package com.cis350.sleeptracker;
 
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -14,15 +16,29 @@ import android.widget.TextView;
 /** @author Michael Collis
  * @version 20131010 */
 public class SleepTrackerApplication extends Application {
-
+	
+	private SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
+			MODE_PRIVATE);
+	
 	public void setColorScheme(View view) {
+		/*
 		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
 				MODE_PRIVATE);
+				*/
 		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			view.setBackgroundColor(getResources().getColor(
 					R.color.background_color_awake));
 		} else {
 			view.setBackgroundColor(getResources().getColor(R.color.background_color));
+		}
+	}
+
+	public void setColorScheme(XYMultipleSeriesRenderer renderer) {
+		
+		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
+		} else {
+			renderer.setMarginsColor(getResources().getColor(R.color.background_color));
 		}
 	}
 
@@ -35,4 +51,6 @@ public class SleepTrackerApplication extends Application {
 		((TextView) v.findViewById(R.id.title)).setText("");
 		activity.getActionBar().setCustomView(v);
 	}
+
+	
 }

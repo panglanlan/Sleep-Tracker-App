@@ -68,15 +68,15 @@ public class ChartActivity extends Activity{
 		thisMonth = (System.currentTimeMillis()/MONTH_IN_MILLISECONDS*MONTH_IN_MILLISECONDS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chart);
-		MainActivity.customizeActionBar(this);
+		((SleepTrackerApplication) this.getApplicationContext()).customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
 
 		
 		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
         
-        if (mPreferences.getBoolean(MainActivity.IS_ASLEEP, false))
-        	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
+        ((SleepTrackerApplication) this.getApplicationContext())
+		.setColorScheme(tabs);
         
         /*
         if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
@@ -284,15 +284,19 @@ public class ChartActivity extends Activity{
 		avg.setTextColor(getResources().getColor(R.color.off_white));
 		avg.setGravity(Gravity.CENTER);
 		*/
-		return avg;
+		return avg; 
 	}
 	
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries, String title, boolean ifYear) {
-		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
+		
+		/*if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
 		} else {
 			renderer.setMarginsColor(getResources().getColor(R.color.background_color));
 		}
+		*/
+		((SleepTrackerApplication) this.getApplicationContext()).setColorScheme(renderer);
+		
 		renderer.setMargins(new int[] {30, 60, 90, 30});
 		renderer.setXTitle(title); 
 		renderer.setYTitle("Hours");
