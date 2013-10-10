@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
 	private LinearLayout mMainLinearLayout;
 	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
-	private Context mContext;
 
 	private static MediaPlayer mPodcastPlayer;
 
@@ -52,7 +51,6 @@ public class MainActivity extends Activity {
 			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
-		mContext = this;
 	}
 
 	@Override
@@ -131,7 +129,7 @@ public class MainActivity extends Activity {
 				mPodcastPlayer.stop();
 				mPodcastPlayer.release();
 			}
-			Intent intent = new Intent(mContext, LogActivity.class);
+			Intent intent = new Intent(this, LogActivity.class);
 			intent.putExtra(DataActivity.ITEM_ASLEEP_TIME_LONG,
 					mPreferences.getLong(RECENT_SLEEP_TIME, 0));
 			startActivity(intent);
@@ -145,7 +143,7 @@ public class MainActivity extends Activity {
 	 * asleep.
 	 */
 	private void displayDialogs() {
-		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder podcastDialogBuilder = new AlertDialog.Builder(this);
 		podcastDialogBuilder.setTitle(getResources().getString(
 				R.string.podcast_dialog_title));
 		podcastDialogBuilder.setMessage(getResources().getString(
@@ -154,7 +152,7 @@ public class MainActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
-						mPodcastPlayer = MediaPlayer.create(mContext, R.raw.shs_podcast);
+						mPodcastPlayer = MediaPlayer.create(MainActivity.this, R.raw.shs_podcast);
 						mPodcastPlayer.start();
 						dialog.dismiss();
 					}
@@ -168,7 +166,7 @@ public class MainActivity extends Activity {
 				});
 		final AlertDialog podcastAlertDialog = podcastDialogBuilder.create();
 
-		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder napDialogBuilder = new AlertDialog.Builder(this);
 		napDialogBuilder.setTitle(getResources().getString(
 				R.string.nap_dialog_title));
 		napDialogBuilder.setMessage(getResources().getString(
