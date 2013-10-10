@@ -98,6 +98,21 @@ public class MainActivity extends Activity {
 		return tips[position];
 	}
 
+	private void onClickSleepOrWakeUpdatePreferencesAndInterface(){
+		SharedPreferences.Editor editor = mPreferences.edit();
+		Boolean wasAsleep = mPreferences.getBoolean(IS_ASLEEP, false);
+		int newBackgroundColor = wasAsleep ? R.color.background_color_awake : R.color.background_color;
+		int newSleepWakeButtonString = wasAsleep ? R.string.go_to_sleep : R.string.wake_up;
+
+		if(wasAsleep) {
+			editor.putLong(RECENT_SLEEP_TIME, System.currentTimeMillis());
+		}
+		editor.putBoolean(IS_ASLEEP, !wasAsleep);
+		editor.commit();
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(newBackgroundColor));
+		mSleepWakeButton.setText(getResources().getString(newSleepWakeButtonString));
+	}
+
 	/*
 	 * Method called when the large button is clicked to indicate going to sleep
 	 * or waking up. Method changes background color and button text. When going
@@ -107,22 +122,11 @@ public class MainActivity extends Activity {
 	 * comment on his/her sleep.
 	 */
 	public void onClickSleepOrWake(View view) {
-		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
-			SharedPreferences.Editor editor = mPreferences.edit();
-			editor.putBoolean(IS_ASLEEP, true);
-			editor.putLong(RECENT_SLEEP_TIME, System.currentTimeMillis());
-			editor.commit();
-			mMainLinearLayout.setBackgroundColor(getResources().getColor(
-					R.color.background_color));
-			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
+		Boolean wasAsleep = mPreferences.getBoolean(IS_ASLEEP, false);
+		onClickSleepOrWakeUpdatePreferencesAndInterface();
+		if (!wasAsleep) {
 			displayDialogs();
 		} else {
-			SharedPreferences.Editor editor = mPreferences.edit();
-			editor.putBoolean(IS_ASLEEP, false);
-			editor.commit();
-			mMainLinearLayout.setBackgroundColor(getResources().getColor(
-					R.color.background_color_awake));
-			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
 			mSleepLogHelper.insertLog(mPreferences.getLong(RECENT_SLEEP_TIME, 0),
 					System.currentTimeMillis(), mPreferences.getBoolean(IS_NAP, false));
 			if (mPodcastPlayer != null) {
