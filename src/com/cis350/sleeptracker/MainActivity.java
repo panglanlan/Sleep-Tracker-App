@@ -34,20 +34,18 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());
 		setContentView(R.layout.activity_main);
-		((SleepTrackerApplication) this.getApplicationContext()).customizeActionBar(this);
+		applicationContext.customizeActionBar(this);
 
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
 
+		applicationContext.setColorScheme(mMainLinearLayout);
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
-			mMainLinearLayout.setBackgroundColor(getResources().getColor(
-					R.color.background_color_awake));
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
 		} else {
-			mMainLinearLayout.setBackgroundColor(getResources().getColor(
-					R.color.background_color));
 			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
