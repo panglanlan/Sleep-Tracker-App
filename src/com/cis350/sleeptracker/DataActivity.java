@@ -27,6 +27,7 @@ public class DataActivity extends Activity {
 	protected final static String ITEM_AWAKE_TIME = "awake_time";
 	protected final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
 	protected final static String ITEM_TOTAL_SLEEP = "total_sleep";
+	private final static long MIN_PER_HR = 60;
 	private final static String[] ITEMS = { ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME,
 			ITEM_TYPE_OF_SLEEP, ITEM_TOTAL_SLEEP };
 	private final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
@@ -52,13 +53,14 @@ public class DataActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data);
-		MainActivity.customizeActionBar(this);
-
+		((SleepTrackerApplication) this.getApplicationContext())
+				.customizeActionBar(this);
 		mDataListView = (ListView) findViewById(R.id.data_list);
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		((SleepTrackerApplication) this.getApplicationContext())
 				.setColorScheme(mDataListView);
+
 		mDataListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -70,6 +72,7 @@ public class DataActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+
 		mDataListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -105,11 +108,6 @@ public class DataActivity extends Activity {
 		});
 	}
 
-	/*
-	 * Method queries the SQLiteDatabase for all of the sleep logs. It sifts
-	 * through the cursor to grab the necessary information for each sleep log,
-	 * puts the items in a List, and sets the ListView adapter.
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -117,25 +115,23 @@ public class DataActivity extends Activity {
 		Cursor cursor = mSleepLogHelper.queryAll();
 		if (cursor != null) {
 			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-				long asleepTime = cursor.getLong(cursor
+				long asleepT = cursor.getLong(cursor
 						.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
-				long awakeTime = cursor.getLong(cursor
+				long awakeT = cursor.getLong(cursor
 						.getColumnIndex(SleepLogHelper.AWAKE_TIME));
-				String fAsleepTime = mSimpleDateFormat.format(new Date(asleepTime));
+				String fAsleepTime = mSimpleDateFormat.format(new Date(asleepT));
 				String fAwakeTime = "-";
-				if (awakeTime != 0) {
-					fAwakeTime = mSimpleDateFormat.format(new Date(awakeTime));
+				if (awakeT > 0) {
+					fAwakeTime = mSimpleDateFormat.format(new Date(awakeT));
 				}
-				long elapsedTime = TimeUnit.MILLISECONDS.toMinutes(awakeTime)
-						- TimeUnit.MILLISECONDS.toMinutes(asleepTime);
-				String totalSleep = String.format(
-						Locale.US,
-						"%d hours, %d minutes",
-						TimeUnit.MINUTES.toHours(elapsedTime),
-						elapsedTime
-								- TimeUnit.HOURS.toMinutes(TimeUnit.MINUTES
-										.toHours(elapsedTime)));
-				if (elapsedTime < 0) {
+				long elapsedT = awakeT - asleepT;
+				long hours = TimeUnit.MILLISECONDS.toHours(elapsedT);
+				long mins = TimeUnit.MILLISECONDS.toMinutes(elapsedT) % MIN_PER_HR;
+
+				String totalSleep = String.format(Locale.US, "%d hours, %d minutes",
+						hours, mins);
+
+				if (elapsedT < 0) {
 					totalSleep = getResources().getString(R.string.pending);
 				}
 				boolean wasNap = cursor.getInt(cursor
@@ -144,8 +140,8 @@ public class DataActivity extends Activity {
 				if (wasNap) {
 					typeOfSleep = getResources().getString(R.string.nap);
 				}
-				mDataList.add(createItem(asleepTime, fAsleepTime, fAwakeTime,
-						typeOfSleep, totalSleep));
+				mDataList.add(createItem(asleepT, fAsleepTime, fAwakeTime, typeOfSleep,
+						totalSleep));
 			}
 		}
 		mDataListView.setAdapter(new SimpleAdapter(this, mDataList,
