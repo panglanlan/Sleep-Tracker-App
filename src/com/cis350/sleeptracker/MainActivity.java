@@ -2,6 +2,7 @@ package com.cis350.sleeptracker;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
@@ -173,28 +174,30 @@ public class MainActivity extends Activity {
 				R.string.nap_dialog_title));
 		napDialogBuilder.setMessage(getResources().getString(
 				R.string.nap_dialog_message));
-		napDialogBuilder.setPositiveButton("Sleep",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						SharedPreferences.Editor editor = mPreferences.edit();
-						editor.putBoolean(IS_NAP, false);
-						editor.commit();
-						podcastAlertDialog.show();
-					}
-				});
-		napDialogBuilder.setNegativeButton("Nap",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						SharedPreferences.Editor editor = mPreferences.edit();
-						editor.putBoolean(IS_NAP, true);
-						editor.commit();
-						podcastAlertDialog.show();
-					}
-				});
+		napDialogBuilder.setPositiveButton("Sleep", new napDialogOnClickListener(podcastAlertDialog, false));
+		napDialogBuilder.setNegativeButton("Nap", new napDialogOnClickListener(podcastAlertDialog, true));
 		AlertDialog napAlertDialog = napDialogBuilder.create();
 		napAlertDialog.show();
+	}
+
+	private class napDialogOnClickListener implements DialogInterface.OnClickListener {
+		Boolean willNap;
+		AlertDialog podcastAlertDialog;
+
+		public napDialogOnClickListener(AlertDialog podcastAlertDialog,
+				Boolean willNap) {
+			super();
+			this.willNap = willNap;
+			this.podcastAlertDialog = podcastAlertDialog;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int id) {
+			SharedPreferences.Editor editor = mPreferences.edit();
+			editor.putBoolean(IS_NAP, willNap);
+			editor.commit();
+			podcastAlertDialog.show();
+		}
 	}
 
 	public void onClickData(View view) {
