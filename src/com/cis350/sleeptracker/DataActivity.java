@@ -10,10 +10,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -34,12 +32,10 @@ public class DataActivity extends Activity {
 	private final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
 			R.id.type_of_sleep, R.id.total_sleep };
 
-	// private SharedPreferences mPreferences;
 	private ListView mDataListView;
 	private SleepLogHelper mSleepLogHelper;
 	private List<Map<String, ?>> mDataList;
 	private SimpleDateFormat mSimpleDateFormat;
-	private Context mContext;
 
 	private Map<String, ?> createItem(long longAsleepTime, String asleepTime,
 			String awakeTime, String typeOfSleep, String totalSleep) {
@@ -58,21 +54,11 @@ public class DataActivity extends Activity {
 		setContentView(R.layout.activity_data);
 		MainActivity.customizeActionBar(this);
 
-		// mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
-		mContext = this;
 		mDataListView = (ListView) findViewById(R.id.data_list);
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
-		((SleepTrackerApplication) mContext.getApplicationContext())
+		((SleepTrackerApplication) this.getApplicationContext())
 				.setColorScheme(mDataListView);
-		/*
-		 * if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
-		 * mDataListView
-		 * .setBackgroundColor(getResources().getColor(R.color.background_color_awake
-		 * )); } else {
-		 * mDataListView.setBackgroundColor(getResources().getColor(R.color
-		 * .background_color)); }
-		 */
 		mDataListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -91,7 +77,7 @@ public class DataActivity extends Activity {
 				final long asleepTime = Long.valueOf((String) mDataList.get(position)
 						.get(ITEM_ASLEEP_TIME_LONG));
 				AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(
-						mContext);
+						DataActivity.this);
 				deleteDialogBuilder.setTitle(getResources().getString(
 						R.string.delete_dialog_title));
 				deleteDialogBuilder.setMessage(getResources().getString(
