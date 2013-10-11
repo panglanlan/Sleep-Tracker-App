@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-	protected static final String MAIN = "main";
-	protected static final String IS_ASLEEP = "is_asleep";
+	static final String MAIN = "main";
+	static final String IS_ASLEEP = "is_asleep";
 	private static final String LAST_LAUNCH = "last_launch";
 	private static final String TIP_POSITION = "tip_position";
 	private static final String RECENT_SLEEP_TIME = "recent_sleep_time";
@@ -35,15 +35,15 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());
+ 		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());
 		setContentView(R.layout.activity_main);
-		applicationContext.customizeActionBar(this);
+ 		applicationContext.customizeActionBar(this);
 
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
 
-		applicationContext.setColorScheme(mMainLinearLayout);
+//		applicationContext.setColorScheme(mMainLinearLayout);
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
 		} else {
