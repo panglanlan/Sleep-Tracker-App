@@ -53,13 +53,14 @@ public class ChartActivity extends Activity{
     private XYSeries wNapSeries = new XYSeries("Nightime Sleep");
     private XYSeries yTotalSleepSeries = new XYSeries("Total Sleep");
     private XYSeriesRenderer totalRenderer, nightTimeRenderer;
-    
+    /*
     private SharedPreferences mPreferences;
+    */
     private SleepLogHelper mSleepLogHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
+//		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
 		initChart(mRenderer, MONTH, "Days", false);
 		initChart(wRenderer, WEEK, "Days", false);
 		initChart(yRenderer, YEAR, "Months", true);
@@ -68,16 +69,14 @@ public class ChartActivity extends Activity{
 		thisMonth = (System.currentTimeMillis()/MONTH_IN_MILLISECONDS*MONTH_IN_MILLISECONDS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chart);
-		((SleepTrackerApplication) this.getApplicationContext()).customizeActionBar(this);
+		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());		
+		applicationContext.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
-
 		
 		TabHost tabs = (TabHost)findViewById(R.id.tabHost);
         tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
-        
         ((SleepTrackerApplication) this.getApplicationContext())
 		.setColorScheme(tabs);
-        
         /*
         if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
         	tabs.setBackgroundColor(getResources().getColor(R.color.background_color_awake));
@@ -85,14 +84,12 @@ public class ChartActivity extends Activity{
         	tabs.setBackgroundColor(getResources().getColor(R.color.background_color));
         }
         */
-        
         tabs.setup();
-
-        modifyChart(wChart, wRenderer,WEEK, wNapSeries, wTotalSleepSeries, wDataset);
-        modifyChart(mChart, mRenderer,MONTH, mNapSeries, mTotalSleepSeries, mDataset);
-        modifyChart(yChart,yRenderer,-1,null,yTotalSleepSeries, yDataset);
-        
-        /*
+        //make sure wChart, mChart, yChart acquire non-null value;	
+        wChart = modifyChart(wChart, wRenderer, WEEK, wNapSeries, wTotalSleepSeries, wDataset);
+        mChart = modifyChart(mChart, mRenderer, MONTH, mNapSeries, mTotalSleepSeries, mDataset);
+        yChart = modifyChart(yChart,yRenderer, -1, null, yTotalSleepSeries, yDataset);        
+/*
         if (wChart == null) {
         	addData(WEEK, wNapSeries, wTotalSleepSeries, wDataset);
             wChart = ChartFactory.getBarChartView(ChartActivity.this, wDataset, wRenderer, Type.STACKED);
@@ -110,18 +107,24 @@ public class ChartActivity extends Activity{
         	yChart = ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer, Type.STACKED);
         } else
         	yChart.repaint();
-        */
-        
+*/        
         tabs.clearAllTabs();
-        
         tabs.addTab(initspec("weekly", "Week",  wChart, tabs));
         tabs.addTab(initspec("monthly", "Month",  mChart, tabs));
         tabs.addTab(initspec("yearly", "Year",  yChart, tabs));
-        tabs.addTab(initspec("excuses","Excuse Record",createExcusesTable(),tabs));  
-        					//changed "Excuse Data" to "Excuse Record", hopefully sounds better.
-        setTabColor(tabs);
+        tabs.addTab(initspec("excuses","Excuse Record",createExcusesTable(),tabs));          
+    	//changed "Excuse Data" to "Excuse Record", hopefully sounds better.
+/*        
+        TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
+        spec1.setIndicator("Week");
+        spec1.setContent(new TabHost.TabContentFactory(){
+			public View createTabContent(String tag) {
+				return wChart;
+			}
+        });
+        tabs.addTab(spec1);
         
-        /*TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
+        TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
         spec2.setIndicator("Month");
         spec2.setContent(new TabHost.TabContentFactory(){
 			public View createTabContent(String tag) {
@@ -138,6 +141,7 @@ public class ChartActivity extends Activity{
 			}
         });
         tabs.addTab(spec3);
+        
         TabHost.TabSpec spec4 = tabs.newTabSpec("excuses");
         spec4.setIndicator("Excuse Data");
         spec4.setContent(new TabHost.TabContentFactory(){
@@ -146,20 +150,20 @@ public class ChartActivity extends Activity{
 			}
         });
         tabs.addTab(spec4);
-        */
+*/        
         setTabColor(tabs);
 	}
 
-	private void modifyChart(GraphicalView chart,XYMultipleSeriesRenderer renderer, int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset){
+	private GraphicalView modifyChart(GraphicalView chart,XYMultipleSeriesRenderer renderer, int numOfPoints, XYSeries nap, XYSeries total, XYMultipleSeriesDataset dataset){
 		if (chart == null) {
-			if(numOfPoints==-1&&nap==null)
+			if(numOfPoints==-1 && nap==null)
         		addYearlyData(yTotalSleepSeries, yDataset);
 			else
 				addData(numOfPoints, nap, total, dataset);
-			
         	chart = ChartFactory.getBarChartView(ChartActivity.this, dataset, renderer, Type.STACKED);
         } else 
         	chart.repaint();
+		return chart;
 	}
 	
 	private TabHost.TabSpec initspec(String specstr, String indicator,  final View chart, TabHost tab){
