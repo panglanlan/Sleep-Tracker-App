@@ -36,8 +36,13 @@ public class LogActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*
+		MainActivity.customizeActionBar(this); %cause a compilation error;
+		*/
+		//invoking the customizeActionBar method as following:
+		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());		
 		setContentView(R.layout.activity_log);
-		MainActivity.customizeActionBar(this);
+		applicationContext.customizeActionBar(this);
 		
 		mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
 		mLinearLayout = (LinearLayout) findViewById(R.id.linear_layout);
@@ -48,7 +53,7 @@ public class LogActivity extends Activity {
 		}
 		mAsleepTime = getIntent().getLongExtra(DataActivity.ITEM_ASLEEP_TIME_LONG, 0);
 		/*
-		 * maybe we can add some extra code here to make the app  decides whether it is a sleep
+		 * maybe we can add some extra code here to make the app decides whether it is a sleep
 		 * or nap in default? so when the prompt asking the user to choose whether it is a nap or sleep,
 		 * we could have a third button as "NA", if the user choose NA, we could use this default value?
 		 * this may lead to some modification for SleepLogHelper.java as well, not sure if that's reasonable.
