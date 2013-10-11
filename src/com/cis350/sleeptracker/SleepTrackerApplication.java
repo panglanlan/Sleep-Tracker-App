@@ -2,9 +2,6 @@
  * 
  */
 package com.cis350.sleeptracker;
-
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -12,19 +9,16 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 /** @author Michael Collis
  * @version 20131010 */
 public class SleepTrackerApplication extends Application {
-	
-	private SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
-			MODE_PRIVATE);
-	
-	public void setColorScheme(View view) {
-		/*
-		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
-				MODE_PRIVATE);
-				*/
+/*	private SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
+ *  //lead to a nullpointer exception when the application runs. 	// 
+ */	
+	public void setColorScheme(View view) {	// 
+
+		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);
 		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			view.setBackgroundColor(getResources().getColor(
 					R.color.background_color_awake));
@@ -34,7 +28,7 @@ public class SleepTrackerApplication extends Application {
 	}
 
 	public void setColorScheme(XYMultipleSeriesRenderer renderer) {
-		
+		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE);		
 		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			renderer.setMarginsColor(getResources().getColor(R.color.background_color_awake));
 		} else {
