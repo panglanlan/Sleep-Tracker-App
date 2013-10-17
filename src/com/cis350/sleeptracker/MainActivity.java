@@ -2,16 +2,13 @@ package com.cis350.sleeptracker;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.view.LayoutInflater;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -35,15 +32,16 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
- 		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this.getApplicationContext());
+		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this
+				.getApplicationContext());
 		setContentView(R.layout.activity_main);
- 		applicationContext.customizeActionBar(this);
+		applicationContext.customizeActionBar(this);
 
 		mPreferences = getSharedPreferences(MAIN, MODE_PRIVATE);
 		mMainLinearLayout = (LinearLayout) findViewById(R.id.main_linear_layout);
 		mSleepWakeButton = (Button) findViewById(R.id.sleep_wake_button);
 
-//		applicationContext.setColorScheme(mMainLinearLayout);
+		// applicationContext.setColorScheme(mMainLinearLayout);
 		if (!mPreferences.getBoolean(IS_ASLEEP, false)) {
 			mSleepWakeButton.setText(getResources().getString(R.string.go_to_sleep));
 		} else {
@@ -97,19 +95,23 @@ public class MainActivity extends Activity {
 		return tips[position];
 	}
 
-	private void onClickSleepOrWakeUpdatePreferencesAndInterface(){
+	private void onClickSleepOrWakeUpdatePreferencesAndInterface() {
 		SharedPreferences.Editor editor = mPreferences.edit();
 		Boolean wasAsleep = mPreferences.getBoolean(IS_ASLEEP, false);
-		int newBackgroundColor = wasAsleep ? R.color.background_color_awake : R.color.background_color;
-		int newSleepWakeButtonString = wasAsleep ? R.string.go_to_sleep : R.string.wake_up;
+		int newBackgroundColor = wasAsleep ? R.color.background_color_awake
+				: R.color.background_color;
+		int newSleepWakeButtonString = wasAsleep ? R.string.go_to_sleep
+				: R.string.wake_up;
 
-		if(wasAsleep) {
+		if (wasAsleep) {
 			editor.putLong(RECENT_SLEEP_TIME, System.currentTimeMillis());
 		}
 		editor.putBoolean(IS_ASLEEP, !wasAsleep);
 		editor.commit();
-		mMainLinearLayout.setBackgroundColor(getResources().getColor(newBackgroundColor));
-		mSleepWakeButton.setText(getResources().getString(newSleepWakeButtonString));
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(
+				newBackgroundColor));
+		mSleepWakeButton
+				.setText(getResources().getString(newSleepWakeButtonString));
 	}
 
 	/*
@@ -133,15 +135,15 @@ public class MainActivity extends Activity {
 				mPodcastPlayer.release();
 			}
 			Intent intent = new Intent(this, LogActivity.class);
-			intent.putExtra(DataActivity.ITEM_ASLEEP_TIME_LONG,
+			intent.putExtra(SleepLogHelper.ITEM_ASLEEP_TIME_LONG,
 					mPreferences.getLong(RECENT_SLEEP_TIME, 0));
 			startActivity(intent);
 		}
 	}
 
-	private AlertDialog buildDialog(String title, String message, String positiveMessage,
-			DialogInterface.OnClickListener positiveListener, String negativeMessage,
-			DialogInterface.OnClickListener negativeListener) {
+	private AlertDialog buildDialog(String title, String message,
+			String positiveMessage, DialogInterface.OnClickListener positiveListener,
+			String negativeMessage, DialogInterface.OnClickListener negativeListener) {
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 		dialogBuilder.setTitle(title);
 		dialogBuilder.setMessage(message);
@@ -157,36 +159,35 @@ public class MainActivity extends Activity {
 	 * asleep.
 	 */
 	private void displayNapAndAlertDialogs() {
-		final AlertDialog podcastAlertDialog = buildDialog(getResources().getString(R.string.podcast_dialog_title),
-				getResources().getString(R.string.podcast_dialog_title),
-				"Yes",
+		final AlertDialog podcastAlertDialog = buildDialog(getResources()
+				.getString(R.string.podcast_dialog_title),
+				getResources().getString(R.string.podcast_dialog_title), "Yes",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
-						mPodcastPlayer = MediaPlayer.create(MainActivity.this, R.raw.shs_podcast);
+						mPodcastPlayer = MediaPlayer.create(MainActivity.this,
+								R.raw.shs_podcast);
 						mPodcastPlayer.start();
 						dialog.dismiss();
 					}
-				},
-				"No",
-				new DialogInterface.OnClickListener() {
+				}, "No", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
 				});
 
-		final AlertDialog napAlertDialog = buildDialog(getResources().getString(R.string.nap_dialog_title),
-				getResources().getString(R.string.nap_dialog_message),
-				"Sleep",
-				new napDialogOnClickListener(podcastAlertDialog, false),
-				"Nap",
+		final AlertDialog napAlertDialog = buildDialog(
+				getResources().getString(R.string.nap_dialog_title), getResources()
+						.getString(R.string.nap_dialog_message), "Sleep",
+				new napDialogOnClickListener(podcastAlertDialog, false), "Nap",
 				new napDialogOnClickListener(podcastAlertDialog, true));
 
 		napAlertDialog.show();
 	}
 
-	private class napDialogOnClickListener implements DialogInterface.OnClickListener {
+	private class napDialogOnClickListener implements
+			DialogInterface.OnClickListener {
 		Boolean willNap;
 		AlertDialog podcastAlertDialog;
 

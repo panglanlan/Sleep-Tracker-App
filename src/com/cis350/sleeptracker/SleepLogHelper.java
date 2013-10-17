@@ -1,5 +1,12 @@
 package com.cis350.sleeptracker;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,8 +19,17 @@ public class SleepLogHelper {
 	private static final String TAG = "SleepLogHelper";
 	private static final int TABLE_VERSION = 4;
 	private static final String TABLE_NAME = "sleep_log";
-	//heoo
-	// COLUMNS
+	protected final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
+	protected final static String ITEM_ASLEEP_TIME = "asleep_time";
+	protected final static String ITEM_AWAKE_TIME = "awake_time";
+	protected final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
+	protected final static String ITEM_TOTAL_SLEEP = "total_sleep";
+	private final static long MIN_PER_HR = 60;
+	protected final static String[] ITEMS = { ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME,
+			ITEM_TYPE_OF_SLEEP, ITEM_TOTAL_SLEEP };
+	protected final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
+			R.id.type_of_sleep, R.id.total_sleep };
+
 	protected static final String ASLEEP_TIME = "asleep_time";
 	protected static final String AWAKE_TIME = "awake_time";
 	protected static final String TIME_SLEPT = "time_slept";
@@ -27,30 +43,41 @@ public class SleepLogHelper {
 	protected static final String EXERCISE = "exercise";
 	protected static final String COMMENTS = "comments";
 
-	protected static final String[] COLUMNS = {ASLEEP_TIME, AWAKE_TIME, TIME_SLEPT, NAP, RATING, CAFFEINE, ALCOHOL,
-		NICOTINE, SUGAR, SCREEN_TIME, EXERCISE, COMMENTS};
-	protected static final String[] EXCUSES = {CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME, EXERCISE};
-	
-	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
-			ASLEEP_TIME + " LONG PRIMARY KEY, " +
-			AWAKE_TIME + " LONG, " +
-			TIME_SLEPT + " LONG, " +
-			NAP + " INT, " +
-			RATING + " INT, " +
-			CAFFEINE + " INT, " +
-			ALCOHOL + " INT, " +
-			NICOTINE + " INT, " +
-			SUGAR + " INT, " +
-			SCREEN_TIME + " INT, " +
-			EXERCISE + " INT, " +
-			COMMENTS + " VARCHAR(255));";
-	
+	private static SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(
+			"MMM dd hh:mm a", Locale.US);
+	protected static final String[] COLUMNS = { ASLEEP_TIME, AWAKE_TIME,
+			TIME_SLEPT, NAP, RATING, CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME,
+			EXERCISE, COMMENTS };
+	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
+			SUGAR, SCREEN_TIME, EXERCISE };
+
+	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
+			+ " (" + ASLEEP_TIME + " LONG PRIMARY KEY, " + AWAKE_TIME + " LONG, "
+			+ TIME_SLEPT + " LONG, " + NAP + " INT, " + RATING + " INT, " + CAFFEINE
+			+ " INT, " + ALCOHOL + " INT, " + NICOTINE + " INT, " + SUGAR + " INT, "
+			+ SCREEN_TIME + " INT, " + EXERCISE + " INT, " + COMMENTS
+			+ " VARCHAR(255));";
+
+	private Map<String, ?> createItem(long longAsleepTime, String asleepTime,
+			String awakeTime, String typeOfSleep, String totalSleep) {
+		Map<String, String> item = new HashMap<String, String>();
+		item.put(ITEM_ASLEEP_TIME_LONG, String.valueOf(longAsleepTime));
+		item.put(ITEM_ASLEEP_TIME, asleepTime);
+		item.put(ITEM_AWAKE_TIME, awakeTime);
+		item.put(ITEM_TYPE_OF_SLEEP, typeOfSleep);
+		item.put(ITEM_TOTAL_SLEEP, totalSleep);
+		return item;
+	}
+
 	private SQLiteDatabase mDb;
 	private DatabaseHelper mDbHelper;
-	
+	private static Context mContext;
+
 	private static class DatabaseHelper extends SQLiteOpenHelper {
-		public DatabaseHelper(Context context, String name, CursorFactory factory, int version) {
+		public DatabaseHelper(Context context, String name, CursorFactory factory,
+				int version) {
 			super(context, name, factory, version);
+			mContext = context;
 		}
 
 		@Override
@@ -60,21 +87,22 @@ public class SleepLogHelper {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
+			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+					+ newVersion);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 			onCreate(db);
 		}
 	}
-	
+
 	public SleepLogHelper(Context context) {
 		mDbHelper = new DatabaseHelper(context, TABLE_NAME, null, TABLE_VERSION);
 		mDb = mDbHelper.getWritableDatabase();
 	}
-	
+
 	public void close() {
 		mDbHelper.close();
 	}
-	
+
 	public boolean insertLog(long asleepTime, long awakeTime, boolean isNap) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, asleepTime);
@@ -93,18 +121,19 @@ public class SleepLogHelper {
 		values.put(EXERCISE, 0);
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
-	
+
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, newAsleepTime);
 		Cursor temp = queryLog(asleepTime);
 		temp.moveToFirst();
-		long awakeTime = temp.getLong(temp.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+		long awakeTime = temp.getLong(temp
+				.getColumnIndex(SleepLogHelper.AWAKE_TIME));
 		values.put(TIME_SLEPT, awakeTime - newAsleepTime);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
-	
+
 	public boolean updateAwakeTime(long asleepTime, long awakeTime) {
 		ContentValues values = new ContentValues();
 		values.put(AWAKE_TIME, awakeTime);
@@ -112,14 +141,14 @@ public class SleepLogHelper {
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
-	
+
 	public boolean updateRating(long asleepTime, int rating) {
 		ContentValues values = new ContentValues();
 		values.put(RATING, rating);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
-	
+
 	public boolean updateExcuses(long asleepTime, boolean[] excuses) {
 		ContentValues values = new ContentValues();
 		for (int i = 0; i < EXCUSES.length; i++) {
@@ -132,52 +161,97 @@ public class SleepLogHelper {
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
-	
+
 	public boolean updateComments(long asleepTime, String comments) {
 		ContentValues values = new ContentValues();
 		values.put(COMMENTS, comments);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
-	
-	public Cursor queryAll() {
+
+	public ArrayList<Map<String, ?>> queryAll() {
 		String orderBy = ASLEEP_TIME + " DESC";
-		return mDb.query(TABLE_NAME, COLUMNS, null, null, null, null, orderBy);
+		Cursor cursor = mDb.query(TABLE_NAME, COLUMNS, null, null, null, null,
+				orderBy);
+
+		if (cursor != null) {
+			ArrayList<Map<String, ?>> queryResult = new ArrayList<Map<String, ?>>();
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				long asleepT = cursor.getLong(cursor
+						.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
+				long awakeT = cursor.getLong(cursor
+						.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+				String fAsleepTime = mSimpleDateFormat.format(new Date(asleepT));
+				String fAwakeTime = "-";
+				if (awakeT > 0) {
+					fAwakeTime = mSimpleDateFormat.format(new Date(awakeT));
+				}
+				long elapsedT = awakeT - asleepT;
+				long hours = TimeUnit.MILLISECONDS.toHours(elapsedT);
+				long mins = TimeUnit.MILLISECONDS.toMinutes(elapsedT) % MIN_PER_HR;
+
+				String totalSleep = String.format(Locale.US, "%d hours, %d minutes",
+						hours, mins);
+
+				if (elapsedT < 0) {
+					totalSleep = mContext.getResources().getString(R.string.pending);
+				}
+				boolean wasNap = cursor.getInt(cursor
+						.getColumnIndex(SleepLogHelper.NAP)) > 0;
+				String typeOfSleep = mContext.getResources().getString(
+						R.string.night_sleep);
+				if (wasNap) {
+					typeOfSleep = mContext.getResources().getString(R.string.nap);
+				}
+				queryResult.add(createItem(asleepT, fAsleepTime, fAwakeTime,
+						typeOfSleep, totalSleep));
+			}
+			return queryResult;
+		} else
+			return null;
 	}
-	
+
 	public Cursor queryLog(long asleepTime) {
 		String selection = ASLEEP_TIME + "=" + asleepTime;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
-	
+
 	public Cursor queryLogDay(long startDay, long endDay) {
-		String selection = ASLEEP_TIME + ">=" + startDay + " AND " + ASLEEP_TIME + "<" + endDay;
+		String selection = ASLEEP_TIME + ">=" + startDay + " AND " + ASLEEP_TIME
+				+ "<" + endDay;
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
-	
-	public Cursor queryLogAvgMonth(long startDay, long endDay){
-		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME + " WHERE " + NAP + "=0 AND (" + ASLEEP_TIME + " BETWEEN " + startDay + " AND " + endDay + ")";
+
+	public Cursor queryLogAvgMonth(long startDay, long endDay) {
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME
+				+ " WHERE " + NAP + "=0 AND (" + ASLEEP_TIME + " BETWEEN " + startDay
+				+ " AND " + endDay + ")";
 		return mDb.rawQuery(rawSelection, null);
 	}
-	
-	public Cursor queryLogExcusesTime(String excuse){
-		String rawSelection = "SELECT AVG(" + TIME_SLEPT + "*1.0) FROM " + TABLE_NAME + " WHERE " + excuse + ">0 AND " + NAP + "=0";
+
+	public Cursor queryLogExcusesTime(String excuse) {
+		String rawSelection = "SELECT AVG(" + TIME_SLEPT + "*1.0) FROM "
+				+ TABLE_NAME + " WHERE " + excuse + ">0 AND " + NAP + "=0";
 		return mDb.rawQuery(rawSelection, null);
 	}
-	public Cursor queryLogExcusesQuality(String excuse){
-		String rawSelection = "SELECT AVG(" + RATING + "*1.0) FROM " + TABLE_NAME + " WHERE " + excuse + "=1";
+
+	public Cursor queryLogExcusesQuality(String excuse) {
+		String rawSelection = "SELECT AVG(" + RATING + "*1.0) FROM " + TABLE_NAME
+				+ " WHERE " + excuse + "=1";
 		return mDb.rawQuery(rawSelection, null);
 	}
-	public int numEntries(){
+
+	public int numEntries() {
 		String selection = NAP + "=0";
-		Cursor temp = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		Cursor temp = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null,
+				null);
 		return temp.getCount();
 	}
-	
+
 	public boolean deleteAllEntries() {
 		return (mDb.delete(TABLE_NAME, null, null) > 0);
 	}
-	
+
 	public boolean deleteEntry(long asleepTime) {
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.delete(TABLE_NAME, whereClause, null) > 0);
