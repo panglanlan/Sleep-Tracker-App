@@ -25,6 +25,8 @@ public class SleepLogHelper {
 	protected final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
 	protected final static String ITEM_TOTAL_SLEEP = "total_sleep";
 	private final static long MIN_PER_HR = 60;
+	private static final long HOUR_IN_MILLISECONDS = 3600000;
+	
 	protected final static String[] ITEMS = { ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME,
 			ITEM_TYPE_OF_SLEEP, ITEM_TOTAL_SLEEP };
 	protected final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
@@ -216,10 +218,36 @@ public class SleepLogHelper {
 		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
 	}
 
-	public Cursor queryLogDay(long startDay, long endDay) {
+	
+	public Map<String,Double> queryLogDay(long startDay, long endDay) {
 		String selection = ASLEEP_TIME + ">=" + startDay + " AND " + ASLEEP_TIME
 				+ "<" + endDay;
-		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		//return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		double totalHoursSlept=0;
+		double napHoursSlept=0;
+		Cursor cursor=mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		Map<String,Double> result=new HashMap<String,Double>();
+		if (cursor != null) {
+			cursor.moveToFirst();
+			for (int j = 0; j < cursor.getCount(); j++) {
+				long startSleep = cursor.getLong(cursor
+						.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
+				long endSleep = cursor.getLong(cursor
+						.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+				double totalSleep = endSleep - startSleep;
+				if (cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) == 0) {
+					totalHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
+					napHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
+				} else {
+					totalHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
+				}
+				cursor.moveToNext();
+			}
+			result.put("totalHoursSlept", totalHoursSlept);
+			result.put("napHoursSlept", napHoursSlept);
+		}
+		return result;
+			
 	}
 
 	public Cursor queryLogAvgMonth(long startDay, long endDay) {

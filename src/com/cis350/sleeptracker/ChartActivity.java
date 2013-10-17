@@ -1,6 +1,8 @@
 package com.cis350.sleeptracker;
 
 import java.text.DecimalFormat;
+import java.util.Map;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart.Type;
@@ -8,7 +10,7 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import android.app.Activity;
+
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
@@ -23,7 +25,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class ChartActivity extends Activity {
+public class ChartActivity extends SleepTrackerActivity {
 	private static final long DAY_IN_MILLISECONDS = 86400000;
 	private static final long HOUR_IN_MILLISECONDS = 3600000;
 	private static final long MONTH_IN_MILLISECONDS = 30 * DAY_IN_MILLISECONDS;
@@ -49,15 +51,10 @@ public class ChartActivity extends Activity {
 	private XYSeries wNapSeries = new XYSeries("Nightime Sleep");
 	private XYSeries yTotalSleepSeries = new XYSeries("Total Sleep");
 	private XYSeriesRenderer totalRenderer, nightTimeRenderer;
-	/*
-	 * private SharedPreferences mPreferences;
-	 */
 	private SleepLogHelper mSleepLogHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
-		// MODE_PRIVATE);
 		initChart(mRenderer, MONTH, "Days", false);
 		initChart(wRenderer, WEEK, "Days", false);
 		initChart(yRenderer, YEAR, "Months", true);
@@ -77,61 +74,19 @@ public class ChartActivity extends Activity {
 				R.color.background_color_awake));
 		((SleepTrackerApplication) this.getApplicationContext())
 				.setColorScheme(tabs);
-		/*
-		 * if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
-		 * tabs.setBackgroundColor
-		 * (getResources().getColor(R.color.background_color_awake)); } else {
-		 * tabs.setBackgroundColor
-		 * (getResources().getColor(R.color.background_color)); }
-		 */
 		tabs.setup();
-		// make sure wChart, mChart, yChart acquire non-null value;
 		wChart = modifyChart(wChart, wRenderer, WEEK, wNapSeries,
 				wTotalSleepSeries, wDataset);
 		mChart = modifyChart(mChart, mRenderer, MONTH, mNapSeries,
 				mTotalSleepSeries, mDataset);
 		yChart = modifyChart(yChart, yRenderer, -1, null, yTotalSleepSeries,
 				yDataset);
-		/*
-		 * if (wChart == null) { addData(WEEK, wNapSeries, wTotalSleepSeries,
-		 * wDataset); wChart = ChartFactory.getBarChartView(ChartActivity.this,
-		 * wDataset, wRenderer, Type.STACKED); } else wChart.repaint();
-		 * 
-		 * if (mChart == null){ addData(MONTH, mNapSeries, mTotalSleepSeries,
-		 * mDataset); mChart = ChartFactory.getBarChartView(ChartActivity.this,
-		 * mDataset, mRenderer, Type.STACKED); } else mChart.repaint();
-		 * 
-		 * if (yChart == null){ addYearlyData(yTotalSleepSeries, yDataset); yChart =
-		 * ChartFactory.getBarChartView(ChartActivity.this, yDataset, yRenderer,
-		 * Type.STACKED); } else yChart.repaint();
-		 */
+		
 		tabs.clearAllTabs();
 		tabs.addTab(initspec("weekly", "Week", wChart, tabs));
 		tabs.addTab(initspec("monthly", "Month", mChart, tabs));
 		tabs.addTab(initspec("yearly", "Year", yChart, tabs));
 		tabs.addTab(initspec("excuses", "Excuse Record", createExcusesTable(), tabs));
-		// changed "Excuse Data" to "Excuse Record", hopefully sounds better.
-		/*
-		 * TabHost.TabSpec spec1 = tabs.newTabSpec("weekly");
-		 * spec1.setIndicator("Week"); spec1.setContent(new
-		 * TabHost.TabContentFactory(){ public View createTabContent(String tag) {
-		 * return wChart; } }); tabs.addTab(spec1);
-		 * 
-		 * TabHost.TabSpec spec2 = tabs.newTabSpec("monthly");
-		 * spec2.setIndicator("Month"); spec2.setContent(new
-		 * TabHost.TabContentFactory(){ public View createTabContent(String tag) {
-		 * return mChart; } }); tabs.addTab(spec2);
-		 * 
-		 * TabHost.TabSpec spec3 = tabs.newTabSpec("yearly");
-		 * spec3.setIndicator("Year"); spec3.setContent(new
-		 * TabHost.TabContentFactory(){ public View createTabContent(String tag) {
-		 * return yChart; } }); tabs.addTab(spec3);
-		 * 
-		 * TabHost.TabSpec spec4 = tabs.newTabSpec("excuses");
-		 * spec4.setIndicator("Excuse Data"); spec4.setContent(new
-		 * TabHost.TabContentFactory(){ public View createTabContent(String tag) {
-		 * return createExcusesTable(); } }); tabs.addTab(spec4);
-		 */
 		setTabColor(tabs);
 	}
 
@@ -245,12 +200,6 @@ public class ChartActivity extends Activity {
 			TextView excuse = initLabel();
 			excuse.setText(EXCUSE_STRINGS[i]);
 
-			/*
-			 * excuse.setTextColor(getResources().getColor(R.color.off_white));
-			 * excuse.setTypeface(null, Typeface.BOLD_ITALIC);
-			 * excuse.setGravity(Gravity.CENTER);
-			 */
-
 			tr.addView(excuse);
 
 			Cursor timeSleptCursor = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
@@ -276,24 +225,12 @@ public class ChartActivity extends Activity {
 		}
 		TextView avg = initLabel();
 		avg.setText(formate);
-		/*
-		 * TextView avg = new TextView(this);
-		 * avg.setTextColor(getResources().getColor(R.color.off_white));
-		 * avg.setGravity(Gravity.CENTER);
-		 */
 		return avg;
 	}
 
 	private void initChart(XYMultipleSeriesRenderer renderer, int numEntries,
 			String title, boolean ifYear) {
 
-		/*
-		 * if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
-		 * renderer.setMarginsColor
-		 * (getResources().getColor(R.color.background_color_awake)); } else {
-		 * renderer
-		 * .setMarginsColor(getResources().getColor(R.color.background_color)); }
-		 */
 		((SleepTrackerApplication) this.getApplicationContext())
 				.setColorScheme(renderer);
 
@@ -321,26 +258,9 @@ public class ChartActivity extends Activity {
 
 		if (!ifYear) {
 
-			/*
-			 * totalRenderer = new XYSeriesRenderer();
-			 * totalRenderer.setColor(getResources
-			 * ().getColor(R.color.background_color_awake_green));
-			 * totalRenderer.setFillPoints(true); totalRenderer.setLineWidth(2);
-			 * totalRenderer.setChartValuesTextAlign(Align.CENTER);
-			 * totalRenderer.setChartValuesTextSize(18);
-			 * totalRenderer.setDisplayChartValues(true);
-			 */
 			renderer.addSeriesRenderer(setRenderer(totalRenderer, true));
 		}
 
-		/*
-		 * nightTimeRenderer = new XYSeriesRenderer();
-		 * nightTimeRenderer.setColor(getResources().getColor(R.color.off_white));
-		 * nightTimeRenderer.setFillPoints(true); nightTimeRenderer.setLineWidth(2);
-		 * nightTimeRenderer.setChartValuesTextAlign(Align.CENTER);
-		 * nightTimeRenderer.setChartValuesTextSize(18);
-		 * nightTimeRenderer.setDisplayChartValues(true);
-		 */
 		renderer.addSeriesRenderer(setRenderer(nightTimeRenderer, false));
 
 	}
@@ -379,24 +299,12 @@ public class ChartActivity extends Activity {
 			endDay = endDay + DAY_IN_MILLISECONDS;
 			double totalHoursSlept = 0;
 			double napHoursSlept = 0;
-			Cursor cursor = mSleepLogHelper.queryLogDay(startDay, endDay);
-			if (cursor != null) {
-				cursor.moveToFirst();
-				for (int j = 0; j < cursor.getCount(); j++) {
-					long startSleep = cursor.getLong(cursor
-							.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
-					long endSleep = cursor.getLong(cursor
-							.getColumnIndex(SleepLogHelper.AWAKE_TIME));
-					double totalSleep = endSleep - startSleep;
-					if (cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) == 0) {
-						totalHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
-						napHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
-					} else {
-						totalHoursSlept += totalSleep / HOUR_IN_MILLISECONDS;
-					}
-
-					cursor.moveToNext();
-				}
+			
+			Map<String,Double> returnResult = mSleepLogHelper.queryLogDay(startDay, endDay);
+			if (!returnResult.isEmpty()) {
+				
+				totalHoursSlept=(Double)returnResult.get("totalHoursSlept");
+				napHoursSlept=(Double)returnResult.get("napHoursSlept");
 				String formate = df.format(totalHoursSlept);
 				double finalValue = Double.parseDouble(formate);
 				total.add(count, finalValue);
