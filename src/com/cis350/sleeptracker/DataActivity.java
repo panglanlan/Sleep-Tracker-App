@@ -2,7 +2,6 @@ package com.cis350.sleeptracker;
 
 import java.util.List;
 import java.util.Map;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +13,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-public class DataActivity extends Activity {
+public class DataActivity extends SleepTrackerActivity {
 
 	private ListView mDataListView;
 	private SleepLogHelper mSleepLogHelper;

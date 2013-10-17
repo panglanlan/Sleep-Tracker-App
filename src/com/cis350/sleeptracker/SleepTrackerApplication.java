@@ -18,16 +18,8 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 /** @author Michael Collis
  * @version 20131010 */
-public class SleepTrackerApplication extends Application implements
-		SensorEventListener {
+public class SleepTrackerApplication extends Application {
 
-	private static final float MIN_BRIGHTNESS = 1F;
-
-	/*
-	 * private SharedPreferences mPreferences =
-	 * getSharedPreferences(MainActivity.MAIN, MODE_PRIVATE); //lead to a
-	 * nullpointer exception when the application runs. //
-	 */
 	public void setColorScheme(View view) { //
 
 		SharedPreferences mPreferences = getSharedPreferences(MainActivity.MAIN,
@@ -62,24 +54,4 @@ public class SleepTrackerApplication extends Application implements
 		((TextView) v.findViewById(R.id.title)).setText("");
 		activity.getActionBar().setCustomView(v);
 	}
-
-	@Override
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-			/*
-			 * WindowManager.LayoutParams layout =
-			 * getApplicationContext().getActivity().getWindow().getAttributes();
-			 * layout.screenBrightness = event.values[0] < MIN_BRIGHTNESS ?
-			 * MIN_BRIGHTNESS : event.values[0] ; getWindow().setAttributes(layout);
-			 */
-		}
-
-	}
-
 }
