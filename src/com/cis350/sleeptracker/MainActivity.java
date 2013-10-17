@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends SleepTrackerActivity {
 	static final String MAIN = "main";
 	static final String IS_ASLEEP = "is_asleep";
 	private static final String LAST_LAUNCH = "last_launch";
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String[] tips = getResources().getString(R.string.tips).split(":");
+		String[] tips = getResources().getStringArray(R.array.tips);
 		TextView tip = (TextView) findViewById(R.id.tip);
 		tip.setText(getTip(tips));
 	}

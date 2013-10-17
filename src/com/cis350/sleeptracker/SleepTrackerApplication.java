@@ -3,18 +3,14 @@
  */
 package com.cis350.sleeptracker;
 
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 /** @author Michael Collis
  * @version 20131010 */

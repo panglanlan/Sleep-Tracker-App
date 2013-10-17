@@ -14,7 +14,7 @@ public class SleepTrackerActivity extends Activity implements
 	private SensorManager mSensorManager;
 	private Sensor mLight;
 
-	private static final float MIN_BRIGHTNESS = 1F;
+	private static final float MIN_BRIGHTNESS = SensorManager.LIGHT_FULLMOON;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
