@@ -250,23 +250,41 @@ public class SleepLogHelper {
 			
 	}
 
-	public Cursor queryLogAvgMonth(long startDay, long endDay) {
+	public double queryLogAvgMonth(long startDay, long endDay) {
 		String rawSelection = "SELECT AVG(" + TIME_SLEPT + ") FROM " + TABLE_NAME
 				+ " WHERE " + NAP + "=0 AND (" + ASLEEP_TIME + " BETWEEN " + startDay
 				+ " AND " + endDay + ")";
-		return mDb.rawQuery(rawSelection, null);
+		//return mDb.rawQuery(rawSelection, null);
+		Cursor cursor=mDb.rawQuery(rawSelection, null);
+		double temp=-1.0;
+		if (cursor.moveToFirst()) {
+			temp = cursor.getLong(0);
+			temp = temp / HOUR_IN_MILLISECONDS;
+		}
+		return temp;
 	}
 
-	public Cursor queryLogExcusesTime(String excuse) {
+	public double queryLogExcusesTime(String excuse) {
 		String rawSelection = "SELECT AVG(" + TIME_SLEPT + "*1.0) FROM "
 				+ TABLE_NAME + " WHERE " + excuse + ">0 AND " + NAP + "=0";
-		return mDb.rawQuery(rawSelection, null);
+		//return mDb.rawQuery(rawSelection, null);
+		Cursor timeSleptCursor=mDb.rawQuery(rawSelection, null);
+		double avgTimeSlept=-1.0;
+		if (timeSleptCursor.moveToFirst()) {
+			avgTimeSlept = timeSleptCursor.getFloat(0) / HOUR_IN_MILLISECONDS;
+		}
+		return avgTimeSlept;
 	}
 
-	public Cursor queryLogExcusesQuality(String excuse) {
+	public double queryLogExcusesQuality(String excuse) {
 		String rawSelection = "SELECT AVG(" + RATING + "*1.0) FROM " + TABLE_NAME
 				+ " WHERE " + excuse + "=1";
-		return mDb.rawQuery(rawSelection, null);
+		Cursor qualityCursor=mDb.rawQuery(rawSelection, null);
+		double avgQuality=-1.0;
+		if (qualityCursor.moveToFirst()) {
+			avgQuality = qualityCursor.getFloat(0) / HOUR_IN_MILLISECONDS;
+		}
+		return avgQuality;
 	}
 
 	public int numEntries() {

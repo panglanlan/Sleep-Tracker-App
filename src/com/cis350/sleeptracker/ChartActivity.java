@@ -202,15 +202,13 @@ public class ChartActivity extends SleepTrackerActivity {
 
 			tr.addView(excuse);
 
-			Cursor timeSleptCursor = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
-			if (timeSleptCursor.moveToFirst()) {
-				avgTimeSlept = timeSleptCursor.getFloat(0) / HOUR_IN_MILLISECONDS;
+			avgTimeSlept = mSleepLogHelper.queryLogExcusesTime(excuses[i]);
+			if (avgTimeSlept!=-1.0) {
 				tr.addView(getTextView(avgTimeSlept));
 			}
 
-			Cursor qualityCursor = mSleepLogHelper.queryLogExcusesQuality(excuses[i]);
-			if (qualityCursor.moveToFirst()) {
-				avgQuality = qualityCursor.getFloat(0);
+			avgQuality = mSleepLogHelper.queryLogExcusesQuality(excuses[i]);
+			if (avgQuality!=-1.0) {
 				tr.addView(getTextView(avgQuality));
 			}
 		}
@@ -322,10 +320,8 @@ public class ChartActivity extends SleepTrackerActivity {
 		long startMonth = thisMonth - 12 * MONTH_IN_MILLISECONDS;
 		long endMonth = thisMonth - 11 * MONTH_IN_MILLISECONDS;
 		for (int i = 1; i < 13; i++) {
-			Cursor cursor = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
-			if (cursor.moveToFirst()) {
-				double temp = cursor.getLong(0);
-				temp = temp / HOUR_IN_MILLISECONDS;
+			double temp = mSleepLogHelper.queryLogAvgMonth(startMonth, endMonth);
+			if (temp!=-1.0) {
 				String formate = df.format(temp);
 				double finalValue = Double.parseDouble(formate);
 				total.add(i, finalValue);
