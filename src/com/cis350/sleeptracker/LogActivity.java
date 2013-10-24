@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class LogActivity extends Activity {
+public class LogActivity extends SleepTrackerActivity {
 	private static final int[] EXCUSE_CHECKBOXES = { R.id.excuse_checkbox1,
 			R.id.excuse_checkbox2, R.id.excuse_checkbox3, R.id.excuse_checkbox4,
 			R.id.excuse_checkbox5, R.id.excuse_checkbox6 };
