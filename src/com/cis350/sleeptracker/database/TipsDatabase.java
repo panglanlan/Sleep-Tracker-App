@@ -131,7 +131,6 @@ public class TipsDatabase extends SleepTrackerDatabase {
 	public TipsDatabase(Context context) {
 		mDbHelper = new DatabaseHelper(context, DATABASE_NAME, null, TABLE_VERSION, TIPS);
 		mDb = mDbHelper.getWritableDatabase();
-		mDbHelper.onUpgrade(mDb, 0, 1);
 		mContext = context;
 	}
 
