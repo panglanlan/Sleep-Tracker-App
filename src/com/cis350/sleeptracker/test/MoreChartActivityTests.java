@@ -1,7 +1,9 @@
 package com.cis350.sleeptracker.test;
 
 import android.test.ActivityInstrumentationTestCase2;
+
 import com.cis350.sleeptracker.*;
+import com.cis350.sleeptracker.database.SleepLogHelper;
 
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;

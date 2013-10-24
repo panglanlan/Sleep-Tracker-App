@@ -11,6 +11,8 @@ import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import com.cis350.sleeptracker.database.SleepLogHelper;
+
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;

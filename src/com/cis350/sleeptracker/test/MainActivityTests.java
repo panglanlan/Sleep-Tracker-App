@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.cis350.sleeptracker.MainActivity;
 import com.cis350.sleeptracker.R;
-import com.cis350.sleeptracker.SleepLogHelper;
+import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class MainActivityTests extends
 		ActivityInstrumentationTestCase2<MainActivity> {

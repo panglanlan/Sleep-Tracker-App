@@ -1,6 +1,8 @@
-package com.cis350.sleeptracker;
+package com.cis350.sleeptracker.database;
 
 import java.util.ArrayList;
+
+import com.cis350.sleeptracker.UserHabits;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,21 +13,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class TipsDatabase {
+public class TipsDatabase extends SleepTrackerDatabase {
 	private static final String TAG = "TipsDatabase";
 	private static final String DATABASE_NAME = "TipsDatabase";
 	private static final int TABLE_VERSION = 1;
 
-	protected static final String CAFFEINE = "caffeine";
-	protected static final String ALCOHOL = "alcohol";
-	protected static final String NICOTINE = "nicotine";
-	protected static final String SUGAR = "sugar";
-	protected static final String SCREEN_TIME = "screen_time";
-	protected static final String EXERCISE = "exercise";
-
-	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
-		SUGAR, SCREEN_TIME, EXERCISE };
-	
 	private class Tip {
 		private String tip;
 		private String[] tipExcuses;
@@ -94,14 +86,6 @@ public class TipsDatabase {
 			db.execSQL(TIP_EXCUSES_TABLE_CREATE);
 			insertExcuses(db, EXCUSES);
 			insertTips(db);
-			/*
-			Cursor temp = db.query("tips", null, null, null, null, null, null);
-			Log.v("tips", DatabaseUtils.dumpCursorToString(temp));
-			temp = db.query("excuses", null, null, null, null, null, null);
-			Log.v("excuses", DatabaseUtils.dumpCursorToString(temp));
-			temp = db.query("tips_excuses", null, null, null, null, null, null);
-			Log.v("tips_excuses", DatabaseUtils.dumpCursorToString(temp));
-			*/
 		}
 
 		private void insertExcuses(SQLiteDatabase db, String[] excuses) {
@@ -147,20 +131,21 @@ public class TipsDatabase {
 	public TipsDatabase(Context context) {
 		mDbHelper = new DatabaseHelper(context, DATABASE_NAME, null, TABLE_VERSION, TIPS);
 		mDb = mDbHelper.getWritableDatabase();
+		mDbHelper.onUpgrade(mDb, 0, 1);
 		mContext = context;
 	}
 
-	private void appendCondition(StringBuilder strB, boolean append, String excuse) {
-		if(append){
+	private void appendCondition(StringBuilder strB, boolean doAppend, String excuse) {
+		if(doAppend){
 			strB.append(" OR excuseID = " + getExcuseId(mDb, excuse));
 		}
 	}
 	
-	public ArrayList<String> getFilteredTips(boolean nicotineUser, boolean alcoholUser, boolean caffeineUser) {
+	public ArrayList<String> getFilteredTips(UserHabits userHabits) {
 		StringBuilder conditions = new StringBuilder();
-		appendCondition(conditions, !nicotineUser, NICOTINE);
-		appendCondition(conditions, !alcoholUser, ALCOHOL);
-		appendCondition(conditions, !caffeineUser, CAFFEINE);
+		for(String excuse : SleepTrackerDatabase.EXCUSES){
+			appendCondition(conditions, !userHabits.getUserHabit(excuse), excuse);
+		}
 
 		String query = "SELECT tip " +
 				"FROM TIPS " +
@@ -168,7 +153,7 @@ public class TipsDatabase {
 				"	SELECT DISTINCT tipId " +
 				"	FROM TIPS_EXCUSES " +
 				"	WHERE 1 = 2 " +
-				conditions.toString() +
+					conditions.toString() +
 				"	); ";
 		
 		Cursor cursor = mDb.rawQuery(query, null);

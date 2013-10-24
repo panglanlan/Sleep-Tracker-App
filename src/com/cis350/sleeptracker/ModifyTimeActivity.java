@@ -3,6 +3,8 @@ package com.cis350.sleeptracker;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.cis350.sleeptracker.database.SleepLogHelper;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

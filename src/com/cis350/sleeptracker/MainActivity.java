@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import com.cis350.sleeptracker.database.SleepLogHelper;
+import com.cis350.sleeptracker.database.TipsDatabase;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,9 +66,7 @@ public class MainActivity extends SleepTrackerActivity {
 	}
 
 	private String getTip() {
-		ArrayList<String> filteredTips = mTipsDatabase.getFilteredTips(mPreferences.getBoolean("nicotine", true),
-																		mPreferences.getBoolean("alcohol", true),
-																		mPreferences.getBoolean("caffeine", true));
+		ArrayList<String> filteredTips = mTipsDatabase.getFilteredTips(new UserHabits(mPreferences));
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
 		int date = cal.get(Calendar.DAY_OF_MONTH);

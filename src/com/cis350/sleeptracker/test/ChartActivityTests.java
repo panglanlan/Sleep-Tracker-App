@@ -3,7 +3,8 @@ package com.cis350.sleeptracker.test;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.cis350.sleeptracker.ChartActivity;
-import com.cis350.sleeptracker.SleepLogHelper;
+import com.cis350.sleeptracker.database.SleepLogHelper;
+
 import org.achartengine.model.XYSeries;
 
 public class ChartActivityTests extends ActivityInstrumentationTestCase2<ChartActivity> {

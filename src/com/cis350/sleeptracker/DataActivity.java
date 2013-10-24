@@ -2,6 +2,9 @@ package com.cis350.sleeptracker;
 
 import java.util.List;
 import java.util.Map;
+
+import com.cis350.sleeptracker.database.SleepLogHelper;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

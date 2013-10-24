@@ -3,16 +3,16 @@ package com.cis350.sleeptracker.test;
 import java.util.GregorianCalendar;
 
 import android.test.ActivityInstrumentationTestCase2;
+
 import com.cis350.sleeptracker.ModifyTimeActivity;
-import com.cis350.sleeptracker.SleepLogHelper;
 
 import android.database.Cursor;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Button;
 
-
 import com.cis350.sleeptracker.R;
+import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class ModifyTimeActivityTests extends
 		ActivityInstrumentationTestCase2<ModifyTimeActivity> {

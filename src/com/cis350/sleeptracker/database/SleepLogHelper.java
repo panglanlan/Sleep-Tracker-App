@@ -1,4 +1,4 @@
-package com.cis350.sleeptracker;
+package com.cis350.sleeptracker.database;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import com.cis350.sleeptracker.R;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,11 +18,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class SleepLogHelper {
+public class SleepLogHelper extends SleepTrackerDatabase {
 	private static final String TAG = "SleepLogHelper";
 	private static final int TABLE_VERSION = 4;
 	private static final String TABLE_NAME = "sleep_log";
-	protected final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
+	public final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
 	protected final static String ITEM_ASLEEP_TIME = "asleep_time";
 	protected final static String ITEM_AWAKE_TIME = "awake_time";
 	protected final static String ITEM_TYPE_OF_SLEEP = "type_of_sleep";
@@ -27,31 +30,23 @@ public class SleepLogHelper {
 	private final static long MIN_PER_HR = 60;
 	private static final long HOUR_IN_MILLISECONDS = 3600000;
 	
-	protected final static String[] ITEMS = { ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME,
+	public final static String[] ITEMS = { ITEM_ASLEEP_TIME, ITEM_AWAKE_TIME,
 			ITEM_TYPE_OF_SLEEP, ITEM_TOTAL_SLEEP };
-	protected final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
+	public final static int[] ITEM_IDS = { R.id.asleep_time, R.id.awake_time,
 			R.id.type_of_sleep, R.id.total_sleep };
 
-	protected static final String ASLEEP_TIME = "asleep_time";
-	protected static final String AWAKE_TIME = "awake_time";
+	public static final String ASLEEP_TIME = "asleep_time";
+	public static final String AWAKE_TIME = "awake_time";
 	protected static final String TIME_SLEPT = "time_slept";
-	protected static final String NAP = "nap";
-	protected static final String RATING = "rating";
-	protected static final String CAFFEINE = "caffeine";
-	protected static final String ALCOHOL = "alcohol";
-	protected static final String NICOTINE = "nicotine";
-	protected static final String SUGAR = "sugar";
-	protected static final String SCREEN_TIME = "screen_time";
-	protected static final String EXERCISE = "exercise";
-	protected static final String COMMENTS = "comments";
+	public static final String NAP = "nap";
+	public static final String RATING = "rating";
+	public static final String COMMENTS = "comments";
 
 	private static SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(
 			"MMM dd hh:mm a", Locale.US);
 	protected static final String[] COLUMNS = { ASLEEP_TIME, AWAKE_TIME,
 			TIME_SLEPT, NAP, RATING, CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME,
 			EXERCISE, COMMENTS };
-	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
-			SUGAR, SCREEN_TIME, EXERCISE };
 
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
 			+ " (" + ASLEEP_TIME + " LONG PRIMARY KEY, " + AWAKE_TIME + " LONG, "
