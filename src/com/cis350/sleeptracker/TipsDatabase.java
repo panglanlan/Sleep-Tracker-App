@@ -83,7 +83,7 @@ public class TipsDatabase {
 		private void insertTips(SQLiteDatabase db) {
 			// First is tip ; next are excuses
 			for(String tip : allTips){
-				String[] tokenizedTip = tip.split("µ");
+				String[] tokenizedTip = tip.split("^");
 				int tipId = 0;
 				boolean isFirst = true;
 				for(String tipToken : tokenizedTip){
