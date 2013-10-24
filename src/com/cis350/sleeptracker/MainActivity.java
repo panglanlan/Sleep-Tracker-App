@@ -1,8 +1,9 @@
 package com.cis350.sleeptracker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,9 +27,10 @@ public class MainActivity extends SleepTrackerActivity {
 	private LinearLayout mMainLinearLayout;
 	private Button mSleepWakeButton;
 	private SleepLogHelper mSleepLogHelper;
+	private TipsDatabase mTipsDatabase;
 
 	private static MediaPlayer mPodcastPlayer;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,35 +50,22 @@ public class MainActivity extends SleepTrackerActivity {
 			mSleepWakeButton.setText(getResources().getString(R.string.wake_up));
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
+
+		mTipsDatabase = new TipsDatabase(this, getResources().getStringArray(R.array.tips));
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String[] tips = getResources().getStringArray(R.array.tips);
+
 		TextView tip = (TextView) findViewById(R.id.tip);
-		tip.setText(getTip(tips));
+		tip.setText(getTip());
 	}
 
-	/*
-	 * Takes in an array of tips and returns which one to display. A different tip
-	 * is displayed each day. So if the last date recorded is not the current
-	 * date, the next tip in the array should be returned. Otherwise, the tip at
-	 * the saved position of the array should be returned.
-	 */
-
-	/*
-	 * I guess we need to modified this, maybe the data structure of the tips?
-	 * Since we should customize user's tips based on their records. Maybe
-	 * hashmap? keys would be excuses and value would be the corresponding
-	 * String[]? so that we could pick corresponding tips from different arrays
-	 * based on the excuse the user gave last day, or one of the excuses if
-	 * several were given? While if so, it may be relatively hard to keep several
-	 * TIP_POSITION as what was doing below, maybe just random the index of tips
-	 * we pick from the array? Just personal thinking:)
-	 */
-
-	private String getTip(String[] tips) {
+	private String getTip() {
+		ArrayList<String> filteredTips = mTipsDatabase.getFilteredTips(mPreferences.getBoolean("nicotine", true),
+																		mPreferences.getBoolean("alcohol", true),
+																		mPreferences.getBoolean("caffeine", true));
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
 		int date = cal.get(Calendar.DAY_OF_MONTH);
@@ -84,7 +73,7 @@ public class MainActivity extends SleepTrackerActivity {
 		int position = mPreferences.getInt(TIP_POSITION, -1);
 		if (date != lastDate) {
 			position += 1;
-			if (position >= tips.length) {
+			if (position >= filteredTips.size()) {
 				position = 0;
 			}
 			SharedPreferences.Editor editor = mPreferences.edit();
@@ -92,7 +81,7 @@ public class MainActivity extends SleepTrackerActivity {
 			editor.putInt(TIP_POSITION, position);
 			editor.commit();
 		}
-		return tips[position];
+		return filteredTips.get(position);
 	}
 
 	private void onClickSleepOrWakeUpdatePreferencesAndInterface() {
