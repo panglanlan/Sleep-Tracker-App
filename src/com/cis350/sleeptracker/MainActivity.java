@@ -51,7 +51,7 @@ public class MainActivity extends SleepTrackerActivity {
 		}
 		mSleepLogHelper = new SleepLogHelper(this);
 
-		mTipsDatabase = new TipsDatabase(this, getResources().getStringArray(R.array.tips));
+		mTipsDatabase = new TipsDatabase(this);
 	}
 
 	@Override

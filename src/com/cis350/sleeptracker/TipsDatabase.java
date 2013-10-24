@@ -25,7 +25,39 @@ public class TipsDatabase {
 
 	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
 		SUGAR, SCREEN_TIME, EXERCISE };
+	
+	private class Tip {
+		private String tip;
+		private String[] tipExcuses;
 
+		public Tip(String tip, String[] tipExcuses) {
+			super();
+			this.tip = tip;
+			this.tipExcuses = tipExcuses;
+		}
+
+		public String getTip() {
+			return tip;
+		}
+
+		public String[] getTipExcuses() {
+			return tipExcuses;
+		}
+	}
+
+	protected final Tip[] TIPS = {
+	    new Tip("Use your bed primarily for sleeping (or other obvious bed-related activities). Avoid doing schoolwork, watching t.v. or using the computer.", new String[]{}),
+		new Tip("Go to bed and wake up at approximately the same times. This helps your body\'s internal clock get tired and more awake at appropriate times.", new String[]{}),
+		new Tip("Make sure your bed and bedroom is a comfortable place! Do you need more mattress or pillow support? Use ear plugs, a white noise machine, and/or a night mask if needed.", new String[]{}),
+		new Tip("Do something relaxing in the 30 minutes leading up to bedtime. Try taking a warm shower, reading, or listening to music.", new String[]{}),
+		new Tip("Avoid consuming alcohol in the 4 hours before bed. Alcohol tends to make you sleepy but actually interferes with deep sleep.", new String[]{ALCOHOL}),
+		new Tip("Avoid using tobacco in the 4 hours before bed. Tobacco acts as a stimulant.", new String[]{NICOTINE}),
+		new Tip("Avoid caffeine later than mid-day.", new String[]{CAFFEINE}),
+		new Tip("Exercise! Aim for earlier in the day as exercise in the 4 hours before bedtime can actually wake your body up.", new String[]{}),
+		new Tip("Turn your clock away from your bed. If you can\'t fall asleep then get up and do a quiet activity until you start to feel sleepy.", new String[]{}),
+		new Tip("Decrease stress in whatever ways possible! If you lie awake thinking at night, keep a  journal near bed. Make a to-do list or write down any concerns you have. The journal is place to keep these things so they can\'t distract you overnight.", new String[]{})
+	};
+	
 	private static final String TIP_TABLE_CREATE =
 			"CREATE TABLE TIPS (" + 
 					"tipId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -47,12 +79,12 @@ public class TipsDatabase {
 	private static Context mContext;
 
 	private class DatabaseHelper extends SQLiteOpenHelper {
-		private String[] allTips;
+		private Tip[] allTips;
 
 		public DatabaseHelper(Context context, String name, CursorFactory factory,
-				int version, String[] allTips) {
+				int version, Tip[] tips) {
 			super(context, name, factory, version);
-			this.allTips = allTips;
+			this.allTips = tips;
 		}
 
 		@Override
@@ -82,23 +114,21 @@ public class TipsDatabase {
 
 		private void insertTips(SQLiteDatabase db) {
 			// First is tip ; next are excuses
-			for(String tip : allTips){
-				String[] tokenizedTip = tip.split("^");
+			for(Tip tip : allTips){
+				String tipValue = tip.getTip();
+				String[] tipExcuses = tip.getTipExcuses();
 				int tipId = 0;
-				boolean isFirst = true;
-				for(String tipToken : tokenizedTip){
-					if(isFirst){
-						ContentValues values = new ContentValues();
-						values.put("tip", tipToken);
-						db.insert("TIPS", null, values);
-						tipId = getTipId(db, tipToken);
-						isFirst = false;
-					} else {
-						ContentValues values = new ContentValues();
-						values.put("tipId", tipId);
-						values.put("excuseId", getExcuseId(db, tipToken));
-						db.insert("TIPS_EXCUSES", null, values);
-					}
+
+				ContentValues values = new ContentValues();
+				values.put("tip", tipValue);
+				db.insert("TIPS", null, values);
+				tipId = getTipId(db, tipValue);
+
+				for(String excuse : tipExcuses){
+					values = new ContentValues();
+					values.put("tipId", tipId);
+					values.put("excuseId", getExcuseId(db, excuse));
+					db.insert("TIPS_EXCUSES", null, values);
 				}
 			}
 		}
@@ -114,8 +144,8 @@ public class TipsDatabase {
 		}
 	}
 
-	public TipsDatabase(Context context, String[] tips) {
-		mDbHelper = new DatabaseHelper(context, DATABASE_NAME, null, TABLE_VERSION, tips);
+	public TipsDatabase(Context context) {
+		mDbHelper = new DatabaseHelper(context, DATABASE_NAME, null, TABLE_VERSION, TIPS);
 		mDb = mDbHelper.getWritableDatabase();
 		mContext = context;
 	}
