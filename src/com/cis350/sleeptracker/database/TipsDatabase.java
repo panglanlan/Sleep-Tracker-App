@@ -136,7 +136,7 @@ public class TipsDatabase extends SleepTrackerDatabase {
 
 	private void appendCondition(StringBuilder strB, boolean doAppend, String excuse) {
 		if(doAppend){
-			strB.append(" OR excuseID = " + getExcuseId(mDb, excuse));
+			strB.append(" OR excuse = \"" + excuse + "\"");
 		}
 	}
 	
@@ -150,10 +150,11 @@ public class TipsDatabase extends SleepTrackerDatabase {
 				"FROM TIPS " +
 				"WHERE tipId NOT IN ( " +
 				"	SELECT DISTINCT tipId " +
-				"	FROM TIPS_EXCUSES " +
-				"	WHERE 1 = 2 " +
+				"	FROM TIPS_EXCUSES TE, EXCUSES E " +
+				"	WHERE TE.excuseId = E.excuseId " +
+				"	AND ( 1 = 2 " +
 					conditions.toString() +
-				"	); ";
+				"	)); ";
 		
 		Cursor cursor = mDb.rawQuery(query, null);
 		ArrayList<String> filteredTips = new ArrayList<String>();
