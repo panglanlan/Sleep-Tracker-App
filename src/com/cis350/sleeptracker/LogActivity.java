@@ -4,13 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
-import com.cis350.sleeptracker.database.SleepLogHelper;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -18,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class LogActivity extends SleepTrackerActivity {
 	private static final int[] EXCUSE_CHECKBOXES = { R.id.excuse_checkbox1,
@@ -98,44 +94,36 @@ public class LogActivity extends SleepTrackerActivity {
 	}
 
 	private void queryLogAndInit() {
-		Cursor cursor = mSleepLogHelper.queryLog(mAsleepTime);
-
 		int rating;
 		String comments;
-		boolean wasNap;
+		Boolean wasNap;
 
-		if (cursor != null) {
-			cursor.moveToFirst();
-			mAwakeTime = cursor.getLong(cursor
-					.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+		mAwakeTime = (Long) mSleepLogHelper.queryLog(mAsleepTime).get("AwakeTime");
+		rating = (Integer) mSleepLogHelper.queryLog(mAsleepTime).get("rating");
+		comments = (String) mSleepLogHelper.queryLog(mAsleepTime).get("comments");
+		wasNap = (Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap");;
 
-			rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
-			comments = cursor.getString(cursor
-					.getColumnIndex(SleepLogHelper.COMMENTS));
-			wasNap = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) > 0;
+		mRatingBar.setRating(rating);
+		mCommentBox.setText(comments);
 
-			mRatingBar.setRating(rating);
-			mCommentBox.setText(comments);
-
-			if (wasNap) {
-				mTypeOfSleep = getResources().getString(R.string.nap);
-			} else {
-				mTypeOfSleep = getResources().getString(R.string.night_sleep);
-			}
-			/*
-			 * for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) { boolean checked =
-			 * cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
-			 * CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
-			 * checkBox.setChecked(checked); }
-			 */
-			SetCheckBox(cursor);
+		if (wasNap) {
+			mTypeOfSleep = getResources().getString(R.string.nap);
+		} else {
+			mTypeOfSleep = getResources().getString(R.string.night_sleep);
 		}
+		/*
+		 * for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) { boolean checked =
+		 * cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
+		 * CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
+		 * checkBox.setChecked(checked); }
+		 */
+		SetCheckBox();
 	}
 
-	private void SetCheckBox(Cursor cursor) {
+	private void SetCheckBox() {
 		for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) {
-			boolean checked = cursor.getInt(cursor
-					.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
+			boolean checked = (Boolean) mSleepLogHelper.queryLog(mAsleepTime).get(
+					SleepLogHelper.EXCUSES[i]);
 			CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
 			checkBox.setChecked(checked);
 		}

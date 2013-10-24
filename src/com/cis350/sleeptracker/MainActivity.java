@@ -3,10 +3,6 @@ package com.cis350.sleeptracker;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import com.cis350.sleeptracker.database.SleepLogHelper;
-import com.cis350.sleeptracker.database.TipsDatabase;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.cis350.sleeptracker.database.SleepLogHelper;
+import com.cis350.sleeptracker.database.TipsDatabase;
 
 public class MainActivity extends SleepTrackerActivity {
 	static final String MAIN = "main";
@@ -33,7 +31,7 @@ public class MainActivity extends SleepTrackerActivity {
 	private TipsDatabase mTipsDatabase;
 
 	private static MediaPlayer mPodcastPlayer;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

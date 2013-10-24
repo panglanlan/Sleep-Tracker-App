@@ -122,10 +122,8 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, newAsleepTime);
-		Cursor temp = queryLog(asleepTime);
-		temp.moveToFirst();
-		long awakeTime = temp.getLong(temp
-				.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+		
+		long awakeTime = (Long)queryLog(asleepTime).get("AwakeTime");
 		values.put(TIME_SLEPT, awakeTime - newAsleepTime);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
@@ -208,9 +206,37 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 			return null;
 	}
 
-	public Cursor queryLog(long asleepTime) {
+	public HashMap<String, Object> queryLog(long asleepTime) {
+		
+		HashMap<String, Object> returnResults = new HashMap<String, Object>();
+		
 		String selection = ASLEEP_TIME + "=" + asleepTime;
-		return mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		Cursor cursor = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
+		//long AsleepTime = cursor.getLong(cursor
+			//	.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
+		if (cursor != null) {
+			cursor.moveToFirst();
+			long AsleepTime = cursor.getLong(cursor
+					.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
+			long AwakeTime = cursor.getLong(cursor
+					.getColumnIndex(SleepLogHelper.AWAKE_TIME));
+
+			int rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
+			String comments = cursor.getString(cursor
+					.getColumnIndex(SleepLogHelper.COMMENTS));
+			boolean wasNap = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) > 0;
+			returnResults.put("AsleepTime", AsleepTime);
+			returnResults.put("AwakeTime", AwakeTime);
+			returnResults.put("rating", rating);
+			returnResults.put("comments", comments);
+			returnResults.put("wasNap", wasNap);
+
+			for (int i = 0; i < EXCUSES.length; i++) {
+				int temp = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i]));
+				returnResults.put(EXCUSES[i], temp);
+			}
+		}
+		return returnResults;
 	}
 
 	
