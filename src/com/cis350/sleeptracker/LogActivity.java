@@ -98,21 +98,14 @@ public class LogActivity extends SleepTrackerActivity {
 	}
 
 	private void queryLogAndInit() {
-		Cursor cursor = mSleepLogHelper.queryLog(mAsleepTime);
-
 		int rating;
 		String comments;
-		boolean wasNap;
-
-		if (cursor != null) {
-			cursor.moveToFirst();
-			mAwakeTime = cursor.getLong(cursor
-					.getColumnIndex(SleepLogHelper.AWAKE_TIME));
-
-			rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
-			comments = cursor.getString(cursor
-					.getColumnIndex(SleepLogHelper.COMMENTS));
-			wasNap = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) > 0;
+		Boolean wasNap;
+			
+			mAwakeTime = (Long)mSleepLogHelper.queryLog(mAsleepTime).get("AwakeTime");
+			rating = (Integer)mSleepLogHelper.queryLog(mAsleepTime).get("rating");
+			comments = (String)mSleepLogHelper.queryLog(mAsleepTime).get("comments");
+			wasNap = (Boolean)mSleepLogHelper.queryLog(mAsleepTime).get("wasNap");;
 
 			mRatingBar.setRating(rating);
 			mCommentBox.setText(comments);
@@ -128,14 +121,12 @@ public class LogActivity extends SleepTrackerActivity {
 			 * CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
 			 * checkBox.setChecked(checked); }
 			 */
-			SetCheckBox(cursor);
-		}
+			SetCheckBox();
 	}
 
-	private void SetCheckBox(Cursor cursor) {
+	private void SetCheckBox() {
 		for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) {
-			boolean checked = cursor.getInt(cursor
-					.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
+			boolean checked = (Boolean)mSleepLogHelper.queryLog(mAsleepTime).get(SleepLogHelper.EXCUSES[i]);
 			CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
 			checkBox.setChecked(checked);
 		}

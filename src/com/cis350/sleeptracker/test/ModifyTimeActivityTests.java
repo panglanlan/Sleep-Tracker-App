@@ -56,11 +56,8 @@ public class ModifyTimeActivityTests extends
 				dp.getDayOfMonth(), tp.getCurrentHour(), tp.getCurrentMinute());
 		long time = cal.getTimeInMillis();
 		long sleepTime = 0;
-		Cursor cursor = mSleepLogHelper.queryLog(time);
-		if (cursor != null) {
-			cursor.moveToFirst();
-			sleepTime = cursor.getLong(cursor.getColumnIndex(ASLEEP_TIME));
-		}
+		sleepTime = (Long)mSleepLogHelper.queryLog(time).get("AsleepTime");
+
 		assertEquals(time, sleepTime);
 	}
 	
@@ -81,11 +78,7 @@ public class ModifyTimeActivityTests extends
 				dp.getDayOfMonth(), tp.getCurrentHour(), tp.getCurrentMinute());
 		long time = cal.getTimeInMillis();
 		long awakeTime = 0;
-		Cursor cursor = mSleepLogHelper.queryLog(0);
-		if (cursor != null) {
-			cursor.moveToFirst();
-			awakeTime = cursor.getLong(cursor.getColumnIndex(AWAKE_TIME));
-		}
+		awakeTime = (Long)mSleepLogHelper.queryLog(0).get("AwakeTime");
 		assertEquals(time, awakeTime);
 	}
 	
@@ -103,11 +96,7 @@ public class ModifyTimeActivityTests extends
 		});
 		getInstrumentation().waitForIdleSync();
 		long sleepTime = 0;
-		Cursor cursor = mSleepLogHelper.queryLog(0);
-		if (cursor != null) {
-			cursor.moveToFirst();
-			sleepTime = cursor.getLong(cursor.getColumnIndex(ASLEEP_TIME));
-		}
+		sleepTime = (Long)mSleepLogHelper.queryLog(0).get("AsleepTime");
 		assertEquals(0, sleepTime);
 	}
 }
