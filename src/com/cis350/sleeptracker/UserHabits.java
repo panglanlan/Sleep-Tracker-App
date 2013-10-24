@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.cis350.sleeptracker.database.SleepTrackerDatabase;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class UserHabits {
 	HashMap<String, Boolean> habits;

@@ -64,9 +64,14 @@ public class MainActivity extends SleepTrackerActivity {
 		TextView tip = (TextView) findViewById(R.id.tip);
 		tip.setText(getTip());
 	}
+	
+	// Public for testability
+	public ArrayList<String> getFilteredTips(){
+		return mTipsDatabase.getFilteredTips(new UserHabits(mPreferences));
+	}
 
 	private String getTip() {
-		ArrayList<String> filteredTips = mTipsDatabase.getFilteredTips(new UserHabits(mPreferences));
+		ArrayList<String> filteredTips = getFilteredTips();
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
 		int date = cal.get(Calendar.DAY_OF_MONTH);
