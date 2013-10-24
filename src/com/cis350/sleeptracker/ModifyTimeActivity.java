@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-public class ModifyTimeActivity extends Activity {
+public class ModifyTimeActivity extends SleepTrackerActivity {
     private TimePicker mTimePicker;
     private DatePicker mDatePicker;
     private SleepLogHelper mSleepLogHelper;
@@ -23,7 +23,7 @@ public class ModifyTimeActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	requestWindowFeature(Window.FEATURE_NO_TITLE);
 	setContentView(R.layout.activity_modify_time);
-	/*
+	/*n
 	mTimePicker = (TimePicker) findViewById(R.id.time_picker);
 	mDatePicker = (DatePicker) findViewById(R.id.date_picker);
 	*/
