@@ -28,10 +28,13 @@ public class SleepTrackerActivity extends Activity implements
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
+
 		if (mLight != null) {
 			WindowManager.LayoutParams layout = getWindow().getAttributes();
 			layout.screenBrightness = event.values[0] < MIN_BRIGHTNESS ? MIN_BRIGHTNESS
 					: event.values[0];
+			System.out.println("Light sensor event triggered: setting brightness to "
+					+ layout.screenBrightness + " lux");
 			getWindow().setAttributes(layout);
 		}
 	}

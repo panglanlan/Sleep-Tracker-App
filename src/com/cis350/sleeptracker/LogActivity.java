@@ -122,8 +122,8 @@ public class LogActivity extends SleepTrackerActivity {
 
 	private void SetCheckBox() {
 		for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) {
-			boolean checked = (Boolean) mSleepLogHelper.queryLog(mAsleepTime).get(
-					SleepLogHelper.EXCUSES[i]);
+			boolean checked = (Integer) mSleepLogHelper.queryLog(mAsleepTime).get(
+					SleepLogHelper.EXCUSES[i]) > 0;
 			CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
 			checkBox.setChecked(checked);
 		}

@@ -11,7 +11,7 @@
     <string name="sleep">SLEEP</string>
     <string name="wake">WAKE</string>
     <string name="pending">Pending&#8230;</string>
-    <string name="comment_hint">Comments on sleeap</string>
+    <string name="comment_hint">Comments on sleep</string>
     <string name="edit">Edit</string>
     <string name="nap">Nap</string>
     <string name="night_sleep">Sleep</string>
