@@ -96,7 +96,7 @@ public class MainActivity extends SleepTrackerActivity {
 		int newSleepWakeButtonString = wasAsleep ? R.string.go_to_sleep
 				: R.string.wake_up;
 
-		if (wasAsleep) {
+		if (!wasAsleep) {
 			editor.putLong(RECENT_SLEEP_TIME, System.currentTimeMillis());
 		}
 		editor.putBoolean(IS_ASLEEP, !wasAsleep);
