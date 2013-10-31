@@ -1,6 +1,5 @@
 package com.cis350.sleeptracker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,8 +8,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.support.v4.app.FragmentActivity;
 
-public class SleepTrackerActivity extends Activity implements
+public class SleepTrackerActivity extends FragmentActivity implements
 		SensorEventListener {
 	private SensorManager mSensorManager;
 	private Sensor mLight;

@@ -20,6 +20,10 @@
 
     <string name="tip_of_day">TIP OF THE DAY</string>
     
+    <!--  Profile strings -->
+    <string name="save_profile">Save profile</string>
+    <string name="cancel_profile">Cancel</string>
+    
 	<!-- Excuses strings -->
 	<string name="excuse_prompt">I had________before bed (check all that apply):</string>
 	<string name="excuse1">Caffeine (coffee, tea, soda, etc)</string>

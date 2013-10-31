@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_linear_layout"
+    android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/profile_list"
-    android:divider="@color/off_white"
-    android:dividerHeight="1sp"
-    android:fadeScrollbars="false"
-    android:orientation="vertical"
-    android:layout_gravity="center"
-     >
-</ListView>
+    android:background="@color/background_color"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip"
+    android:paddingBottom="20dip" >
+    
+	<fragment
+        android:id="@+id/profileListFragment"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dip"
+        android:layout_marginTop="20dip"
+        class="com.cis350.sleeptracker.ProfileFragment" />
+
+	<LinearLayout 
+	    android:orientation="horizontal" 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dip" >
+	    <Button
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/cancel_profile"
+	        android:textSize="15sp"
+	        android:textColor="@color/off_white"
+	        android:onClick="onClickCancelProfile" />
+	    <Button
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/save_profile"
+	        android:textSize="15sp"
+	        android:textColor="@color/off_white" 
+	        android:onClick="onClickSaveProfile" />
+	</LinearLayout>
+</LinearLayout>
