@@ -2,12 +2,16 @@ package com.cis350.sleeptracker;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+
 import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class ModifyTimeActivity extends SleepTrackerActivity {
@@ -22,10 +26,7 @@ public class ModifyTimeActivity extends SleepTrackerActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_modify_time);
-		/*
-		 * n mTimePicker = (TimePicker) findViewById(R.id.time_picker); mDatePicker
-		 * = (DatePicker) findViewById(R.id.date_picker);
-		 */
+		
 		mSleepLogHelper = new SleepLogHelper(this);
 		mIsSleepTime = false;
 		mAsleepTime = getIntent().getLongExtra(SleepLogHelper.ASLEEP_TIME, 0);
@@ -35,12 +36,7 @@ public class ModifyTimeActivity extends SleepTrackerActivity {
 			originalTime = mAsleepTime;
 		}
 		setTimePicker(originalTime);
-		// GregorianCalendar cal = new GregorianCalendar();
-		// cal.setTimeInMillis(originalTime);
-		// mTimePicker.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
-		// mTimePicker.setCurrentMinute(cal.get(Calendar.MINUTE));
-		// mDatePicker.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-		// cal.get(Calendar.DAY_OF_MONTH), null);
+		
 	}
 
 	private void setTimePicker(long orgtime) {
@@ -60,16 +56,42 @@ public class ModifyTimeActivity extends SleepTrackerActivity {
 				mDatePicker.getMonth(), mDatePicker.getDayOfMonth(),
 				mTimePicker.getCurrentHour(), mTimePicker.getCurrentMinute());
 		long time = cal.getTimeInMillis();
-		/*
-		 * if (mIsSleepTime) { mSleepLogHelper.updateAsleepTime(mAsleepTime, time);
-		 * Intent intent = new Intent(); intent.putExtra(SleepLogHelper.ASLEEP_TIME,
-		 * time); setResult(RESULT_OK, intent); } else {
-		 * mSleepLogHelper.updateAwakeTime(mAsleepTime, time); Intent intent = new
-		 * Intent(); intent.putExtra(SleepLogHelper.AWAKE_TIME, time);
-		 * setResult(RESULT_OK, intent); }
-		 */
-		updateTime(mIsSleepTime, time);
-		finish();
+		
+		if (mIsSleepTime) {
+			long awakeTime = (Long)mSleepLogHelper.queryLog(mAsleepTime).get("AwakeTime");
+			if (time > awakeTime) {
+				new AlertDialog.Builder(this)
+				.setTitle("error")
+				.setMessage("time set error: asleeptime later than awaketime.")
+				.setNegativeButton( "Reset" ,
+						new DialogInterface.OnClickListener() {
+					public void onClick(
+							DialogInterface dialoginterface, int i){
+					}        
+				}).show();    
+			}
+			else {
+				updateTime(mIsSleepTime, time);
+				finish();
+			}
+		}
+		else {
+			if (mAsleepTime > time) {
+				new AlertDialog.Builder(this)
+				.setTitle("error")
+				.setMessage("time set error: asleeptime later than awaketime.")
+				.setPositiveButton( "Reset" ,
+						new DialogInterface.OnClickListener() {
+					public void onClick(
+							DialogInterface dialoginterface, int i){
+					}        
+				}).show();    
+			}
+			else {
+				updateTime(mIsSleepTime, time);
+				finish();
+			}
+		}
 	}
 
 	private void updateTime(boolean isSlptime, long time) {

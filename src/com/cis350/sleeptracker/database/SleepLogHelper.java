@@ -122,7 +122,6 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, newAsleepTime);
-		
 		long awakeTime = (Long)queryLog(asleepTime).get("AwakeTime");
 		values.put(TIME_SLEPT, awakeTime - newAsleepTime);
 		String whereClause = ASLEEP_TIME + "=" + asleepTime;
@@ -209,11 +208,8 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 	public HashMap<String, Object> queryLog(long asleepTime) {
 		
 		HashMap<String, Object> returnResults = new HashMap<String, Object>();
-		
 		String selection = ASLEEP_TIME + "=" + asleepTime;
 		Cursor cursor = mDb.query(TABLE_NAME, COLUMNS, selection, null, null, null, null);
-		//long AsleepTime = cursor.getLong(cursor
-			//	.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
 		if (cursor != null) {
 			cursor.moveToFirst();
 			long AsleepTime = cursor.getLong(cursor
