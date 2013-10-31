@@ -45,8 +45,7 @@
 	    android:layout_weight="1"
 	    android:textSize="20sp"
 	    android:textColor="@color/off_white" />
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout 
 	    android:orientation="horizontal" 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"

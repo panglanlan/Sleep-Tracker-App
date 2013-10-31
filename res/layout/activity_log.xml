@@ -6,14 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color" >
-	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
+	<ScrollView
 	    android:layout_width="match_parent"
 	    android:layout_height="0dip"
 	    android:layout_weight="1"
 	    android:fadeScrollbars="false" >
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		    xmlns:tools="http://schemas.android.com/tools"
+		<LinearLayout
 		    android:orientation="vertical" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
@@ -27,8 +25,7 @@
 			    android:textSize="25sp"
 			    android:textStyle="bold"
 			    android:textColor="@color/off_white" />
-		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			    xmlns:tools="http://schemas.android.com/tools"
+		    <LinearLayout
 			    android:orientation="horizontal" 
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content" >
@@ -56,8 +53,7 @@
 			        android:textColor="@color/off_white"
 			        android:onClick="onClickEditSleep" />
 		    </LinearLayout>
-		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			    xmlns:tools="http://schemas.android.com/tools"
+		    <LinearLayout
 			    android:orientation="horizontal" 
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content" >
@@ -123,8 +119,7 @@
 		        android:textSize="15sp"
 		        android:textStyle="bold"
 		        android:textColor="@color/off_white" />
-		    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+		    <LinearLayout
 			   	android:id="@+id/excuse1"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"
@@ -151,8 +146,7 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+			<LinearLayout
 			   	android:id="@+id/excuse2"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"
@@ -179,8 +173,7 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+			<LinearLayout
 			   	android:id="@+id/excuse3"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"
@@ -207,8 +200,7 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+			<LinearLayout
 			   	android:id="@+id/excuse4"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"
@@ -235,8 +227,7 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+			<LinearLayout
 			   	android:id="@+id/excuse5"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"
@@ -263,8 +254,7 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
-			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			   	xmlns:tools="http://schemas.android.com/tools"
+			<LinearLayout
 			   	android:id="@+id/excuse6"
 			   	android:orientation="horizontal" 
 			   	android:layout_width="match_parent"

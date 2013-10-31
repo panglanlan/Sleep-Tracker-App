@@ -1,6 +1,7 @@
 package com.cis350.sleeptracker;
 
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -39,6 +40,7 @@ public class SleepTrackerApplication extends Application {
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void customizeActionBar(Activity activity) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			activity.getActionBar().setDisplayShowCustomEnabled(true);

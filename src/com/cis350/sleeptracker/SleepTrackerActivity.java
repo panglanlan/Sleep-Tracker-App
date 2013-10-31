@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 public class SleepTrackerActivity extends Activity implements
@@ -33,7 +34,7 @@ public class SleepTrackerActivity extends Activity implements
 			WindowManager.LayoutParams layout = getWindow().getAttributes();
 			layout.screenBrightness = event.values[0] < MIN_BRIGHTNESS ? MIN_BRIGHTNESS
 					: event.values[0];
-			System.out.println("Light sensor event triggered: setting brightness to "
+			Log.d("Light sensor event triggered", "Setting brightness to "
 					+ layout.screenBrightness + " lux");
 			getWindow().setAttributes(layout);
 		}
