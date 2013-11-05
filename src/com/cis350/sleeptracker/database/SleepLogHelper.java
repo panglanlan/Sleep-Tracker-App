@@ -20,7 +20,7 @@ import android.util.Log;
 
 public class SleepLogHelper extends SleepTrackerDatabase {
 	private static final String TAG = "SleepLogHelper";
-	private static final int TABLE_VERSION = 4;
+	private static final int TABLE_VERSION = 5;
 	private static final String TABLE_NAME = "sleep_log";
 	public final static String ITEM_ASLEEP_TIME_LONG = "asleep_time_long";
 	protected final static String ITEM_ASLEEP_TIME = "asleep_time";
@@ -41,19 +41,22 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 	public static final String NAP = "nap";
 	public static final String RATING = "rating";
 	public static final String COMMENTS = "comments";
+	private static final String CONCENTRATION = "concentration";
 
 	private static SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(
 			"MMM dd hh:mm a", Locale.US);
 	protected static final String[] COLUMNS = { ASLEEP_TIME, AWAKE_TIME,
 			TIME_SLEPT, NAP, RATING, CAFFEINE, ALCOHOL, NICOTINE, SUGAR, SCREEN_TIME,
-			EXERCISE, COMMENTS };
+			EXERCISE, COMMENTS, CONCENTRATION };
 
 	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
 			+ " (" + ASLEEP_TIME + " LONG PRIMARY KEY, " + AWAKE_TIME + " LONG, "
 			+ TIME_SLEPT + " LONG, " + NAP + " INT, " + RATING + " INT, " + CAFFEINE
 			+ " INT, " + ALCOHOL + " INT, " + NICOTINE + " INT, " + SUGAR + " INT, "
 			+ SCREEN_TIME + " INT, " + EXERCISE + " INT, " + COMMENTS
-			+ " VARCHAR(255));";
+			+ " VARCHAR(255), "+ CONCENTRATION +" VARCHAR(10));";
+	
+	private static final String SELECT_LAST_ASLEEP_TIME="SELECT MAX ("+ ASLEEP_TIME +") FROM "+TABLE_NAME+";";
 
 	private Map<String, ?> createItem(long longAsleepTime, String asleepTime,
 			String awakeTime, String typeOfSleep, String totalSleep) {
@@ -119,6 +122,18 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 
+	public boolean updateConcentration(String concentration){
+		ContentValues values = new ContentValues();
+		Cursor cursor=mDb.rawQuery(SELECT_LAST_ASLEEP_TIME,null);
+		long asleeptime = 0;
+		while(cursor.moveToNext())
+			asleeptime=cursor.getLong(0);
+		values.put(CONCENTRATION, concentration);
+		String whereClause=ASLEEP_TIME+ "="+asleeptime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
+	
+	
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();
 		values.put(ASLEEP_TIME, newAsleepTime);
