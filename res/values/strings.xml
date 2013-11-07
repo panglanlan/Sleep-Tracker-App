@@ -51,6 +51,7 @@
     <string name="profile_exercise_4">Regularly (3&#8211;4 times/week)</string>
     <string name="profile_exercise_5">Frequently (5+ times/week)</string>
     <string-array name="school_array">
+        <item>Unspecified</item>
         <item>Annenberg School for Communication</item>
         <item>Arts and Sciences</item>
         <item>Dental Medicine</item>
@@ -63,6 +64,16 @@
         <item>Social Policy and Practice</item>
         <item>Veterinary Medicine</item>
         <item>The Wharton School</item>
+    </string-array>
+    <string-array name="class_year_array">
+        <item>Unspecified</item>
+        <item>Freshman</item>
+        <item>Sophomore</item>
+        <item>Junior</item>
+        <item>Senior</item>
+        <item>Master\'s</item>
+        <item>PhD</item>
+        <item>Penn Employee</item>
     </string-array>
     
     

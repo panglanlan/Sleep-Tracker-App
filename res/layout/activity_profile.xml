@@ -26,20 +26,20 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginTop="10dip" >
 	    <Button
+	        android:id="@+id/profileCancelButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:text="@string/cancel_profile"
 	        android:textSize="15sp"
-	        android:textColor="@color/off_white"
-	        android:onClick="onClickCancelProfile" />
+	        android:textColor="@color/off_white" />
 	    <Button
+	        android:id="@+id/profileSaveButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:text="@string/save_profile"
 	        android:textSize="15sp"
-	        android:textColor="@color/off_white" 
-	        android:onClick="onClickSaveProfile" />
+	        android:textColor="@color/off_white" />
 	</LinearLayout>
 </LinearLayout>
