@@ -166,10 +166,10 @@ public class MainActivity extends SleepTrackerActivity {
 	}
 
 	private void displayNapAndConcentrationAndAlertDialogs() {
-		int napBeginHour = 10; // 24-hour format
-		int napStopHour = 16;
-		int sleepBeginHour = 20;
-		int sleepStopHour = 5;
+		final int napBeginHour = 10; // 24-hour format
+		final int napStopHour = 16;
+		final int sleepBeginHour = 20;
+		final int sleepStopHour = 5;
 		Time now = new Time();
 		now.setToNow();
 		int currentHour = now.hour;
