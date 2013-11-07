@@ -81,10 +81,35 @@
 			        android:textColor="@color/off_white"
 			        android:onClick="onClickEditWake" />
 		    </LinearLayout>
+		    
+		   
 		    <View
 		        android:layout_width="match_parent"
 		        android:layout_height="1sp"
 		        android:background="@color/off_white" />
+		     <LinearLayout
+			     android:orientation="horizontal" 
+			    android:layout_width="match_parent"
+			    android:layout_height="fill_parent">
+			    <TextView
+		        android:id="@+id/concentration_header"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:text="@string/concentration_header"
+			    android:textSize="20sp"
+			    android:textStyle="bold"
+			    android:textColor="@color/off_white" />
+		    <RatingBar
+			    android:id="@+id/concentration_bar"
+			    android:isIndicator="true"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center_horizontal"
+			    android:numStars="5"
+			    android:stepSize="1" />
+			</LinearLayout>
+			
 		    <TextView
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
@@ -100,6 +125,8 @@
 			    android:layout_gravity="center_horizontal"
 			    android:numStars="5"
 			    android:stepSize="1" />
+		    
+			 
 		    <View
 		        android:layout_width="match_parent"
 		        android:layout_height="1sp"
@@ -146,6 +173,9 @@
 					android:textStyle="bold"
 			   		android:textColor="@color/off_white" />
 			</LinearLayout>
+			
+			
+			
 			<LinearLayout
 			   	android:id="@+id/excuse2"
 			   	android:orientation="horizontal" 

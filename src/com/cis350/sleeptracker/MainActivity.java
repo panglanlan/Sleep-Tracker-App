@@ -23,7 +23,6 @@ public class MainActivity extends SleepTrackerActivity {
 	private static final String TIP_POSITION = "tip_position";
 	private static final String RECENT_SLEEP_TIME = "recent_sleep_time";
 	private static final String IS_NAP = "is_nap";
-	
 
 	private SharedPreferences mPreferences;
 	private LinearLayout mMainLinearLayout;
@@ -245,10 +244,7 @@ public class MainActivity extends SleepTrackerActivity {
 		
         	String[] concentration_array=getResources().getStringArray(R.array.concentration_array);
         	String concentration=concentration_array[id];
-        	SharedPreferences.Editor editor = mPreferences.edit();
-        	editor.putString(concentration, concentration);
-			editor.commit();
-			mSleepLogHelper.updateConcentration(concentration);
+			mSleepLogHelper.updateConcentration(0,concentration);
 			podcastAlertDialog.show();
 	}
 }
