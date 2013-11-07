@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.WindowManager;
 import android.support.v4.app.FragmentActivity;
 
@@ -51,6 +52,12 @@ public class SleepTrackerActivity extends FragmentActivity implements
 	protected void onPause() {
 		super.onPause();
 		mSensorManager.unregisterListener(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 }

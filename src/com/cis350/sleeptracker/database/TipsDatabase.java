@@ -38,6 +38,16 @@ public class TipsDatabase extends SleepTrackerDatabase {
 	}
 
 	protected final Tip[] TIPS = {
+		new Tip("Less sleep is associated with weight gain, while giving yourself an extra hour of sleep can equate to almost 15 pounds of weight loss.", new String[]{}),
+		new Tip("The Midnight Snack is your enemy. After eating you are less likely to settle down for bed.", new String[]{SUGAR}),
+		new Tip("The before-bed cigarette will keep you up at night.", new String[]{NICOTINE}),
+		new Tip("If you MUST have dessert, switch it up and eat it before dinner. The earlier the sugar, the earlier to bed.", new String[]{SUGAR}),
+		new Tip("The weekends are not a time to sleep in! By developing a regular sleep schedule and waking up at the same time each day (even on weekends), you will improve the quality and duration of your sleep.", new String[]{}),
+		new Tip("Plan your work accordingly. Looking at blue light before bed (light from a computer screen or phone) makes it harder to fall asleep. By prioritizing your email-sending and paper writing earlier in the day, and your textbook reading later in the day, it will be easier for you to get to sleep.", new String[]{SCREEN_TIME}),
+		new Tip("Sleep and Exercise go hand in hand. One cannot effectively occur without the other. If you do not get enough sleep, you are not reaping the full benefits of exercising AND if you are not exercising you are not having the most restful night of sleep possible!", new String[]{}),
+		new Tip("It’s not just beauty sleep; it’s brain sleep as well. Not only can the effects of sleep be seen on your face and body, but lack of sleep affects your cognitive abilities as well and is even more immediate.", new String[]{}),
+		new Tip("Would you take an exam legally intoxicated? Hopefully not. So why would you take one without sleep? One night without sleep leaves you performing like you were legally drunk at a blood alcohol content of .08. So, pulling that all-nighter cram session may not be the best idea after all.", new String[]{}),
+		new Tip("Plans Past 50? If you are sleep deprived you are 20% more likely to die in 20 years. Get a good night’s sleep while you still can.", new String[]{}),
 	    new Tip("Use your bed primarily for sleeping (or other obvious bed-related activities). Avoid doing schoolwork, watching t.v. or using the computer.", new String[]{}),
 		new Tip("Go to bed and wake up at approximately the same times. This helps your body\'s internal clock get tired and more awake at appropriate times.", new String[]{}),
 		new Tip("Make sure your bed and bedroom is a comfortable place! Do you need more mattress or pillow support? Use ear plugs, a white noise machine, and/or a night mask if needed.", new String[]{}),
