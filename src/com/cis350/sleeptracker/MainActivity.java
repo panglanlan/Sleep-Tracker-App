@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -121,7 +122,7 @@ public class MainActivity extends SleepTrackerActivity {
 		Boolean wasAsleep = mPreferences.getBoolean(IS_ASLEEP, false);
 		onClickSleepOrWakeUpdatePreferencesAndInterface();
 		if (!wasAsleep) {
-			displayNapAndAlertDialogs();
+			displayNapAndConcentrationAndAlertDialogs();
 		} else {
 			mSleepLogHelper.insertLog(mPreferences.getLong(RECENT_SLEEP_TIME, 0),
 					System.currentTimeMillis(), mPreferences.getBoolean(IS_NAP, false));
@@ -155,13 +156,24 @@ public class MainActivity extends SleepTrackerActivity {
 	    return concentrationAlertDialog.create();
 	} 
 
-	/*
-	 * Method displays two consecutive dialogs. The first prompts the user to pick
-	 * whether he/she is going to sleep for the night or taking a nap. The second
-	 * asks the user whether he/she wants to listen to the podcast while falling
-	 * asleep.
-	 */
-	private void displayNapAndAlertDialogs() {
+	// Parameters have to be 24-hour format
+	private boolean checkBetweenHours(int now, int begin, int end) {
+		if(begin < end){
+			return now >= begin && now <= end;
+		} else {
+			return now >= begin || now <= end;
+		}
+	}
+
+	private void displayNapAndConcentrationAndAlertDialogs() {
+		int napBeginHour = 10; // 24-hour format
+		int napStopHour = 16;
+		int sleepBeginHour = 20;
+		int sleepStopHour = 5;
+		Time now = new Time();
+		now.setToNow();
+		int currentHour = now.hour;
+
 		final AlertDialog podcastAlertDialog = buildDialog(getResources()
 				.getString(R.string.podcast_dialog_title),
 				getResources().getString(R.string.podcast_dialog_title), "Yes",
@@ -182,13 +194,28 @@ public class MainActivity extends SleepTrackerActivity {
 		
 		final AlertDialog concentrationDialog=buildconcentrationDialog(new concentrationOnClickListener(podcastAlertDialog));
 
-		final AlertDialog napAlertDialog = buildDialog(
-				getResources().getString(R.string.nap_dialog_title), getResources()
-						.getString(R.string.nap_dialog_message), "Sleep",
-				new napDialogOnClickListener(concentrationDialog,false), "Nap",
-				new napDialogOnClickListener(podcastAlertDialog, true));
+		// Try to infer if sleep or nap
+		if(checkBetweenHours(currentHour, napBeginHour, napStopHour)){
+			changeIsNapPreference(true);
+			podcastAlertDialog.show();
+		} else if(checkBetweenHours(currentHour, sleepBeginHour, sleepStopHour)){
+			changeIsNapPreference(false);
+			concentrationDialog.show();
+		} else{
+			final AlertDialog napAlertDialog = buildDialog(
+					getResources().getString(R.string.nap_dialog_title), getResources()
+					.getString(R.string.nap_dialog_message), "Sleep",
+					new napDialogOnClickListener(concentrationDialog,false), "Nap",
+					new napDialogOnClickListener(podcastAlertDialog, true));
 
-		napAlertDialog.show();
+			napAlertDialog.show();
+		}
+	}
+
+	private void changeIsNapPreference(boolean willNap){
+		SharedPreferences.Editor editor = mPreferences.edit();
+		editor.putBoolean(IS_NAP, willNap);
+		editor.commit();
 	}
 
 	private class napDialogOnClickListener implements
@@ -205,9 +232,7 @@ public class MainActivity extends SleepTrackerActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int id) {
-			SharedPreferences.Editor editor = mPreferences.edit();
-			editor.putBoolean(IS_NAP, willNap);
-			editor.commit();
+			changeIsNapPreference(willNap);
 			nextAlertDialog.show();
 		}
 	}
