@@ -23,6 +23,7 @@ public class MainActivity extends SleepTrackerActivity {
 	private static final String TIP_POSITION = "tip_position";
 	private static final String RECENT_SLEEP_TIME = "recent_sleep_time";
 	private static final String IS_NAP = "is_nap";
+	
 
 	private SharedPreferences mPreferences;
 	private LinearLayout mMainLinearLayout;
@@ -145,6 +146,14 @@ public class MainActivity extends SleepTrackerActivity {
 		return dialogBuilder.create();
 	}
 
+	private AlertDialog buildconcentrationDialog(DialogInterface.OnClickListener concentrationListener ){
+		
+		final AlertDialog.Builder concentrationAlertDialog = new AlertDialog.Builder(this);
+		concentrationAlertDialog.setTitle(R.string.concentration_dialog_title);
+		concentrationAlertDialog.setItems(R.array.concentration_array, concentrationListener );
+	    return concentrationAlertDialog.create();
+	} 
+
 	/*
 	 * Method displays two consecutive dialogs. The first prompts the user to pick
 	 * whether he/she is going to sleep for the night or taking a nap. The second
@@ -169,22 +178,24 @@ public class MainActivity extends SleepTrackerActivity {
 						dialog.cancel();
 					}
 				});
+		
+		final AlertDialog concentrationDialog=buildconcentrationDialog(new concentrationOnClickListener(podcastAlertDialog));
 
 		final AlertDialog napAlertDialog = buildDialog(
 				getResources().getString(R.string.nap_dialog_title), getResources()
 						.getString(R.string.nap_dialog_message), "Sleep",
-				new napDialogOnClickListener(podcastAlertDialog, false), "Nap",
-				new napDialogOnClickListener(podcastAlertDialog, true));
+				new napDialogOnClickListener_concentration(concentrationDialog,false), "Nap",
+				new napDialogOnClickListener_pod(podcastAlertDialog, true));
 
 		napAlertDialog.show();
 	}
 
-	private class napDialogOnClickListener implements
+	private class napDialogOnClickListener_pod implements
 			DialogInterface.OnClickListener {
 		Boolean willNap;
 		AlertDialog podcastAlertDialog;
 
-		public napDialogOnClickListener(AlertDialog podcastAlertDialog,
+		public napDialogOnClickListener_pod(AlertDialog podcastAlertDialog,
 				Boolean willNap) {
 			super();
 			this.willNap = willNap;
@@ -199,7 +210,49 @@ public class MainActivity extends SleepTrackerActivity {
 			podcastAlertDialog.show();
 		}
 	}
+	
+	private class napDialogOnClickListener_concentration implements
+		DialogInterface.OnClickListener {
+		Boolean willNap;
+		AlertDialog concentrationRatingDialog;
 
+		public napDialogOnClickListener_concentration(AlertDialog concentrationRatingDialog,Boolean willNap) {
+			super();
+			this.willNap=willNap;
+			this.concentrationRatingDialog = concentrationRatingDialog;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int id) {
+			SharedPreferences.Editor editor = mPreferences.edit();
+			editor.putBoolean(IS_NAP, willNap);
+			editor.commit();
+			concentrationRatingDialog.show();
+		}
+	}
+	
+	private class concentrationOnClickListener implements
+		DialogInterface.OnClickListener {
+		AlertDialog podcastAlertDialog;
+
+	public concentrationOnClickListener(AlertDialog podcastAlertDialog) {
+		super();
+		this.podcastAlertDialog = podcastAlertDialog;;
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int id) {
+		
+        	String[] concentration_array=getResources().getStringArray(R.array.concentration_array);
+        	String concentration=concentration_array[id];
+        	SharedPreferences.Editor editor = mPreferences.edit();
+        	editor.putString(concentration, concentration);
+			editor.commit();
+			mSleepLogHelper.updateConcentration(concentration);
+			podcastAlertDialog.show();
+	}
+}
+	
 	public void onClickData(View view) {
 		Intent intent = new Intent(this, DataActivity.class);
 		startActivity(intent);

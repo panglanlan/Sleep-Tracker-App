@@ -87,4 +87,12 @@
 	<string name="nap_dialog_message">Are you taking a nap or going to sleep for the night?</string>
 	<string name="delete_dialog_title">Delete Entry</string>
 	<string name="delete_dialog_message">Would you like to delete this entry?</string>
+	<string name="concentration_dialog_title">Please rate your concentration level</string>
+	<string-array name="concentration_array">
+	    <item>"1"</item>
+	    <item>"2"</item>
+	    <item>"3"</item>
+	    <item>"4"</item>
+	    <item>"5"</item>
+	</string-array>
 </resources>
