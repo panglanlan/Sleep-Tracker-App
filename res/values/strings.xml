@@ -23,6 +23,48 @@
     <!--  Profile strings -->
     <string name="save_profile">Save profile</string>
     <string name="cancel_profile">Cancel</string>
+    <string name="profile_title">Edit User Profile</string>
+    <string name="profile_class_year_text">Class Year:</string>
+    <string name="profile_school_text">School at Penn:</string>
+    <string name="profile_smoking_text">How often do you smoke?</string>
+    <string name="profile_smoking_1">Never</string>
+    <string name="profile_smoking_2">Rarely (1&#8211;2 cigarettes/month)</string>
+    <string name="profile_smoking_3">Occasionally (1&#8211;2 cigarettes/week)</string>
+    <string name="profile_smoking_4">Regularly (1&#8211;5 cigarettes/day)</string>
+    <string name="profile_smoking_5">Frequently (5+ cigarettes/day)</string>
+    <string name="profile_alcohol_text">How often do you drink alcohol?</string>
+    <string name="profile_alcohol_1">Never</string>
+    <string name="profile_alcohol_2">Rarely (1&#8211;2 drinks/month)</string>
+    <string name="profile_alcohol_3">Occasionally (1&#8211;2 drinks/week)</string>
+    <string name="profile_alcohol_4">Regularly (3&#8211;4 drinks/week)</string>
+    <string name="profile_alcohol_5">Frequently (5+ drinks/week)</string>
+    <string name="profile_coffee_text">How often do you drink coffee?</string>
+    <string name="profile_coffee_1">Never</string>
+    <string name="profile_coffee_2">Rarely (1&#8211;2 cups/month)</string>
+    <string name="profile_coffee_3">Occasionally (1&#8211;2 cups/week)</string>
+    <string name="profile_coffee_4">Regularly (1&#8211;2 cups/day)</string>
+    <string name="profile_coffee_5">Frequently (3+ cups/day)</string>
+    <string name="profile_exercise_text">How often do you get exercise? (20&#8211;30m of moderate intensity)</string>
+    <string name="profile_exercise_1">Never</string>
+    <string name="profile_exercise_2">Rarely (1&#8211;2 times/month)</string>
+    <string name="profile_exercise_3">Occasionally (1&#8211;2 times/week)</string>
+    <string name="profile_exercise_4">Regularly (3&#8211;4 times/week)</string>
+    <string name="profile_exercise_5">Frequently (5+ times/week)</string>
+    <string-array name="school_array">
+        <item>Annenberg School for Communication</item>
+        <item>Arts and Sciences</item>
+        <item>Dental Medicine</item>
+        <item>Design</item>
+        <item>Engineering</item>
+        <item>Graduate School of Education</item>
+        <item>Law School</item>
+        <item>Nursing</item>
+        <item>Perelman School of Medicine</item>
+        <item>Social Policy and Practice</item>
+        <item>Veterinary Medicine</item>
+        <item>The Wharton School</item>
+    </string-array>
+    
     
 	<!-- Excuses strings -->
 	<string name="excuse_prompt">I had________before bed (check all that apply):</string>
