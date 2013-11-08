@@ -232,7 +232,7 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 					.getColumnIndex(SleepLogHelper.ASLEEP_TIME));
 			long AwakeTime = cursor.getLong(cursor
 					.getColumnIndex(SleepLogHelper.AWAKE_TIME));
-
+			String conRating = cursor.getString(cursor.getColumnIndex(SleepLogHelper.CONCENTRATION));
 			int rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
 			String comments = cursor.getString(cursor
 					.getColumnIndex(SleepLogHelper.COMMENTS));
@@ -242,7 +242,7 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 			returnResults.put("rating", rating);
 			returnResults.put("comments", comments);
 			returnResults.put("wasNap", wasNap);
-
+			returnResults.put("concentration", conRating);
 			for (int i = 0; i < EXCUSES.length; i++) {
 				int temp = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i]));
 				returnResults.put(EXCUSES[i], temp);
