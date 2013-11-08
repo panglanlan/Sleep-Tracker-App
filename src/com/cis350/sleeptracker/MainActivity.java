@@ -247,7 +247,7 @@ public class MainActivity extends SleepTrackerActivity {
         	SharedPreferences.Editor editor = mPreferences.edit();
         	editor.putString(concentration, concentration);
 			editor.commit();
-			mSleepLogHelper.updateConcentration(concentration);
+			mSleepLogHelper.updateConcentration(0, concentration);
 			podcastAlertDialog.show();
 	}
 }
