@@ -102,8 +102,7 @@ public class MainActivity extends SleepTrackerActivity {
 		}
 		editor.putBoolean(IS_ASLEEP, !wasAsleep);
 		editor.commit();
-		mMainLinearLayout.setBackgroundColor(getResources().getColor(
-				newBackgroundColor));
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(newBackgroundColor));
 		mSleepWakeButton
 				.setText(getResources().getString(newSleepWakeButtonString));
 	}
