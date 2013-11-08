@@ -5,4 +5,5 @@
     <color name="background_color_awake_blue">#cc6506</color>
     <color name="background_color_awake_green">#cc6600</color>
     <color name="off_white">#161616</color>
+    <color name="background_color_chart">#FFBF00</color>
 </resources>

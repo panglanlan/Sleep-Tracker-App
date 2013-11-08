@@ -33,10 +33,10 @@ public class SleepTrackerApplication extends Application {
 				MODE_PRIVATE);
 		if (!mPreferences.getBoolean(MainActivity.IS_ASLEEP, false)) {
 			renderer.setMarginsColor(getResources().getColor(
-					R.color.background_color_awake));
+					R.color.background_color_chart));
 		} else {
 			renderer.setMarginsColor(getResources()
-					.getColor(R.color.background_color));
+					.getColor(R.color.background_color_chart));
 		}
 	}
 
