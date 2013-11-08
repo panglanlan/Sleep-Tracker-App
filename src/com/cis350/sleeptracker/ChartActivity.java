@@ -2,6 +2,7 @@ package com.cis350.sleeptracker;
 
 import java.text.DecimalFormat;
 import java.util.Map;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.BarChart.Type;
@@ -9,6 +10,7 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
@@ -17,10 +19,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class ChartActivity extends SleepTrackerActivity {
@@ -50,9 +54,10 @@ public class ChartActivity extends SleepTrackerActivity {
 	private XYSeries yTotalSleepSeries = new XYSeries("Total Sleep");
 	private XYSeriesRenderer totalRenderer, nightTimeRenderer;
 	private SleepLogHelper mSleepLogHelper;
-
+	private LinearLayout mMainLinearLayout;	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		initChart(mRenderer, MONTH, "Days", false);
 		initChart(wRenderer, WEEK, "Days", false);
 		initChart(yRenderer, YEAR, "Months", true);
@@ -66,12 +71,12 @@ public class ChartActivity extends SleepTrackerActivity {
 				.getApplicationContext());
 		applicationContext.customizeActionBar(this);
 		mSleepLogHelper = new SleepLogHelper(this);
-
+		
 		TabHost tabs = (TabHost) findViewById(R.id.tabHost);
-		tabs.setBackgroundColor(getResources().getColor(
-				R.color.background_color_awake));
-		((SleepTrackerApplication) this.getApplicationContext())
-				.setColorScheme(tabs);
+		tabs.setBackgroundColor(getResources().getColor(R.color.background_color_chart));
+		//((SleepTrackerApplication) this.getApplicationContext())
+		//	.setColorScheme(tabs);
+			// 
 		tabs.setup();
 		wChart = modifyChart(wChart, wRenderer, WEEK, wNapSeries,
 				wTotalSleepSeries, wDataset);
@@ -86,6 +91,7 @@ public class ChartActivity extends SleepTrackerActivity {
 		tabs.addTab(initspec("yearly", "Year", yChart, tabs));
 		tabs.addTab(initspec("excuses", "Excuse Record", createExcusesTable(), tabs));
 		setTabColor(tabs);
+		mMainLinearLayout = (LinearLayout) findViewById(R.id.tab_linear_layout);
 	}
 
 	private GraphicalView modifyChart(GraphicalView chart,
@@ -128,6 +134,7 @@ public class ChartActivity extends SleepTrackerActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(R.color.background_color_chart));
 
 	}
 
@@ -230,8 +237,8 @@ public class ChartActivity extends SleepTrackerActivity {
 			String title, boolean ifYear) {
 
 		((SleepTrackerApplication) this.getApplicationContext())
-				.setColorScheme(renderer);
-
+		.setColorScheme(renderer);
+				
 		renderer.setMargins(new int[] { 30, 60, 90, 30 });
 		renderer.setXTitle(title);
 		renderer.setYTitle("Hours");
@@ -268,7 +275,7 @@ public class ChartActivity extends SleepTrackerActivity {
 		rendererPassIn = new XYSeriesRenderer();
 		if (renderflag) {
 			rendererPassIn.setColor(getResources().getColor(
-					R.color.background_color_awake_green));
+					R.color.background_color));
 		} else {
 			rendererPassIn.setColor(getResources().getColor(R.color.off_white));
 		}
