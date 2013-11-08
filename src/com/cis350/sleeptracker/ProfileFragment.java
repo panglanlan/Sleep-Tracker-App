@@ -38,19 +38,11 @@ public class ProfileFragment extends Fragment {
 
 	private static final String PREF_CLASS_YEAR = "classYear";
 	private static final String PREF_SCHOOL = "school";
-	private static final String PREF_SMOKING = "pref_smoke";
-	private static final String PREF_ALCOHOL = "pref_alcohol";
-	private static final String PREF_COFFEE = "pref_coffee";
-	private static final String PREF_EXERCISE = "pref_exercise";
+	private static final String PREF_SMOKING = TipsDatabase.getNicotine();
+	private static final String PREF_ALCOHOL = TipsDatabase.getAlcohol();
+	private static final String PREF_COFFEE = TipsDatabase.getCaffeine();
+	private static final String PREF_EXERCISE = TipsDatabase.getExercise();
 
-	// TODO: THESE ARE BEING STORED AS INTS BY THE PROFILE AND ACCESSED AS
-	// BOOLEANS BY THE USERHABITS INIT!
-	/*
-	 * private static final String PREF_SMOKING = TipsDatabase.getNicotine();
-	 * private static final String PREF_ALCOHOL = TipsDatabase.getAlcohol();
-	 * private static final String PREF_COFFEE = TipsDatabase.getCaffeine();
-	 * private static final String PREF_EXERCISE = TipsDatabase.getExercise();
-	 */
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
