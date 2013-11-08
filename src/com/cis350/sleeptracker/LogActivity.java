@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import com.cis350.sleeptracker.database.SleepLogHelper;
 
 public class LogActivity extends SleepTrackerActivity {
@@ -33,6 +35,7 @@ public class LogActivity extends SleepTrackerActivity {
 	private RatingBar mRatingBar;
 	private EditText mCommentBox;
 	private String mTypeOfSleep;
+	private RatingBar mConcentrationBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,50 +76,42 @@ public class LogActivity extends SleepTrackerActivity {
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		mRatingBar = (RatingBar) findViewById(R.id.rating_bar);
 		mCommentBox = (EditText) findViewById(R.id.comment_box);
-		/*
-		 * Cursor cursor = mSleepLogHelper.queryLog(mAsleepTime); if (cursor !=
-		 * null) { cursor.moveToFirst(); mAwakeTime =
-		 * cursor.getLong(cursor.getColumnIndex(SleepLogHelper.AWAKE_TIME)); int
-		 * rating = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.RATING));
-		 * String comments =
-		 * cursor.getString(cursor.getColumnIndex(SleepLogHelper.COMMENTS)); boolean
-		 * wasNap = cursor.getInt(cursor.getColumnIndex(SleepLogHelper.NAP)) > 0;
-		 * mRatingBar.setRating(rating); mCommentBox.setText(comments); if (wasNap)
-		 * { mTypeOfSleep = getResources().getString(R.string.nap); } else {
-		 * mTypeOfSleep = getResources().getString(R.string.night_sleep); }
-		 * 
-		 * for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) { boolean checked =
-		 * cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
-		 * CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
-		 * checkBox.setChecked(checked); }
-		 */
+		mConcentrationBar=(RatingBar)findViewById(R.id.concentration_bar);
+		
+		if((Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap")){
+			mConcentrationBar.setVisibility(View.GONE);
+			((TextView)findViewById(R.id.concentration_header)).setVisibility(View.GONE);
+		}
+		
 		queryLogAndInit();
 	}
 
 	private void queryLogAndInit() {
 		int rating;
+		int concentration_rating;
 		String comments;
 		Boolean wasNap;
 
 		mAwakeTime = (Long) mSleepLogHelper.queryLog(mAsleepTime).get("AwakeTime");
 		rating = (Integer) mSleepLogHelper.queryLog(mAsleepTime).get("rating");
 		comments = (String) mSleepLogHelper.queryLog(mAsleepTime).get("comments");
-		wasNap = (Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap");;
-
+		wasNap = (Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap");
+	
 		mRatingBar.setRating(rating);
 		mCommentBox.setText(comments);
 
 		if (wasNap) {
 			mTypeOfSleep = getResources().getString(R.string.nap);
 		} else {
+			String s=(String) mSleepLogHelper.queryLog(mAsleepTime).get("concentration");
+			if(s!=null&&!s.isEmpty()){
+				String concentration[]=s.split(" ");
+				concentration_rating=Integer.parseInt(concentration[1]);
+				mConcentrationBar.setRating(concentration_rating);
+			}
 			mTypeOfSleep = getResources().getString(R.string.night_sleep);
 		}
-		/*
-		 * for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) { boolean checked =
-		 * cursor.getInt(cursor.getColumnIndex(SleepLogHelper.EXCUSES[i])) > 0;
-		 * CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
-		 * checkBox.setChecked(checked); }
-		 */
+		
 		SetCheckBox();
 	}
 
@@ -163,6 +158,10 @@ public class LogActivity extends SleepTrackerActivity {
 	}
 
 	public void onClickSave(View view) {
+		
+		if(!(Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap"))
+			mSleepLogHelper.updateConcentration(mAsleepTime, "Level "+String.valueOf(mConcentrationBar.getRating()));
+			
 		mSleepLogHelper.updateRating(mAsleepTime, (int) mRatingBar.getRating());
 		mSleepLogHelper.updateComments(mAsleepTime, mCommentBox.getText()
 				.toString());
@@ -176,21 +175,12 @@ public class LogActivity extends SleepTrackerActivity {
 	}
 
 	public void onClickEditSleep(View view) {
-		/*
-		 * Intent intent = new Intent(this, ModifyTimeActivity.class);
-		 * intent.putExtra(SleepLogHelper.ASLEEP_TIME, mAsleepTime);
-		 * startActivityForResult(intent, 1);
-		 */
+		
 		intentModifyTime(EDITSLEEPCLK);
 	}
 
 	public void onClickEditWake(View view) {
-		/*
-		 * Intent intent = new Intent(this, ModifyTimeActivity.class);
-		 * intent.putExtra(SleepLogHelper.ASLEEP_TIME, mAsleepTime);
-		 * intent.putExtra(SleepLogHelper.AWAKE_TIME, mAwakeTime);
-		 * startActivityForResult(intent, 2);
-		 */
+		
 		intentModifyTime(EDITWAKECLK);
 	}
 
