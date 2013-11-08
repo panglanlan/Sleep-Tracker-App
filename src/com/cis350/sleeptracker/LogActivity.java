@@ -112,6 +112,7 @@ public class LogActivity extends SleepTrackerActivity {
 			mTypeOfSleep = getResources().getString(R.string.night_sleep);
 		}
 		
+		
 		SetCheckBox();
 	}
 
