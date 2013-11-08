@@ -3,7 +3,6 @@ package com.cis350.sleeptracker;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.cis350.sleeptracker.database.SleepLogHelper;
 import com.cis350.sleeptracker.database.TipsDatabase;
 
@@ -26,7 +24,6 @@ public class MainActivity extends SleepTrackerActivity {
 	private static final String TIP_POSITION = "tip_position";
 	private static final String RECENT_SLEEP_TIME = "recent_sleep_time";
 	private static final String IS_NAP = "is_nap";
-	
 
 	private SharedPreferences mPreferences;
 	private LinearLayout mMainLinearLayout;
@@ -66,9 +63,9 @@ public class MainActivity extends SleepTrackerActivity {
 		TextView tip = (TextView) findViewById(R.id.tip);
 		tip.setText(getTip());
 	}
-	
+
 	// Public for testability
-	public ArrayList<String> getFilteredTips(){
+	public ArrayList<String> getFilteredTips() {
 		return mTipsDatabase.getFilteredTips(new UserHabits(mPreferences));
 	}
 
@@ -105,7 +102,8 @@ public class MainActivity extends SleepTrackerActivity {
 		}
 		editor.putBoolean(IS_ASLEEP, !wasAsleep);
 		editor.commit();
-		mMainLinearLayout.setBackgroundColor(getResources().getColor(newBackgroundColor));
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(
+				newBackgroundColor));
 		mSleepWakeButton
 				.setText(getResources().getString(newSleepWakeButtonString));
 	}
@@ -148,21 +146,23 @@ public class MainActivity extends SleepTrackerActivity {
 		return dialogBuilder.create();
 	}
 
-	private AlertDialog buildconcentrationDialog(DialogInterface.OnClickListener concentrationListener ){
-		
-		final AlertDialog.Builder concentrationAlertDialog = new AlertDialog.Builder(this);
+	private AlertDialog buildconcentrationDialog(
+			DialogInterface.OnClickListener concentrationListener) {
+
+		final AlertDialog.Builder concentrationAlertDialog = new AlertDialog.Builder(
+				this);
 		concentrationAlertDialog.setTitle(R.string.concentration_dialog_title);
-		concentrationAlertDialog.setItems(R.array.concentration_array, concentrationListener );
-	    return concentrationAlertDialog.create();
-	} 
+		concentrationAlertDialog.setItems(R.array.concentration_array,
+				concentrationListener);
+		return concentrationAlertDialog.create();
+	}
 
 	// Parameters have to be 24-hour format
 	private boolean checkBetweenHours(int now, int begin, int end) {
-		if(begin < end){
+		if (begin < end)
 			return now >= begin && now <= end;
-		} else {
+		else
 			return now >= begin || now <= end;
-		}
 	}
 
 	private void displayNapAndConcentrationAndAlertDialogs() {
@@ -191,28 +191,29 @@ public class MainActivity extends SleepTrackerActivity {
 						dialog.cancel();
 					}
 				});
-		
-		final AlertDialog concentrationDialog=buildconcentrationDialog(new concentrationOnClickListener(podcastAlertDialog));
+
+		final AlertDialog concentrationDialog = buildconcentrationDialog(new concentrationOnClickListener(
+				podcastAlertDialog));
 
 		// Try to infer if sleep or nap
-		if(checkBetweenHours(currentHour, napBeginHour, napStopHour)){
+		if (checkBetweenHours(currentHour, napBeginHour, napStopHour)) {
 			changeIsNapPreference(true);
 			podcastAlertDialog.show();
-		} else if(checkBetweenHours(currentHour, sleepBeginHour, sleepStopHour)){
+		} else if (checkBetweenHours(currentHour, sleepBeginHour, sleepStopHour)) {
 			changeIsNapPreference(false);
 			concentrationDialog.show();
-		} else{
+		} else {
 			final AlertDialog napAlertDialog = buildDialog(
 					getResources().getString(R.string.nap_dialog_title), getResources()
-					.getString(R.string.nap_dialog_message), "Sleep",
-					new napDialogOnClickListener(concentrationDialog,false), "Nap",
+							.getString(R.string.nap_dialog_message), "Sleep",
+					new napDialogOnClickListener(concentrationDialog, false), "Nap",
 					new napDialogOnClickListener(podcastAlertDialog, true));
 
 			napAlertDialog.show();
 		}
 	}
 
-	private void changeIsNapPreference(boolean willNap){
+	private void changeIsNapPreference(boolean willNap) {
 		SharedPreferences.Editor editor = mPreferences.edit();
 		editor.putBoolean(IS_NAP, willNap);
 		editor.commit();
@@ -223,8 +224,7 @@ public class MainActivity extends SleepTrackerActivity {
 		Boolean willNap;
 		AlertDialog nextAlertDialog;
 
-		public napDialogOnClickListener(AlertDialog nextAlertDialog,
-				Boolean willNap) {
+		public napDialogOnClickListener(AlertDialog nextAlertDialog, Boolean willNap) {
 			super();
 			this.willNap = willNap;
 			this.nextAlertDialog = nextAlertDialog;
@@ -238,7 +238,7 @@ public class MainActivity extends SleepTrackerActivity {
 	}
 
 	private class concentrationOnClickListener implements
-		DialogInterface.OnClickListener {
+			DialogInterface.OnClickListener {
 		AlertDialog podcastAlertDialog;
 
 		public concentrationOnClickListener(AlertDialog podcastAlertDialog) {
@@ -248,13 +248,14 @@ public class MainActivity extends SleepTrackerActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int id) {
-			String[] concentration_array=getResources().getStringArray(R.array.concentration_array);
-			String concentration=concentration_array[id];
+			String[] concentration_array = getResources().getStringArray(
+					R.array.concentration_array);
+			String concentration = concentration_array[id];
 			mSleepLogHelper.updateConcentration(0, concentration);
 			podcastAlertDialog.show();
 		}
 	}
-	
+
 	public void onClickData(View view) {
 		Intent intent = new Intent(this, DataActivity.class);
 		startActivity(intent);
@@ -262,6 +263,11 @@ public class MainActivity extends SleepTrackerActivity {
 
 	public void onClickGraph(View view) {
 		Intent intent = new Intent(this, ChartActivity.class);
+		startActivity(intent);
+	}
+
+	public void onClickProfile(View view) {
+		Intent intent = new Intent(this, ProfileActivity.class);
 		startActivity(intent);
 	}
 

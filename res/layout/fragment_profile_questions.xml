@@ -9,7 +9,6 @@
     	android:orientation="vertical" 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_gravity="center"
    		android:divider="@color/off_white"
    		android:dividerHeight="1sp"
     	android:background="@color/background_color">
@@ -39,7 +38,7 @@
 		    android:layout_height="wrap_content" 
 		    android:paddingTop="10dip">
 		    	<TextView
-		    		android:layout_width="match_parent"
+		    		android:layout_width="wrap_content"
 		    		android:layout_height="wrap_content"
 		    		android:gravity="center_vertical|left"
 		    		android:textSize="15sp"
@@ -51,7 +50,8 @@
    					android:layout_width="fill_parent"
    					android:gravity="center_vertical|right"
    					android:paddingRight="10dip"
-   					android:layout_height="wrap_content" />
+   					android:layout_height="wrap_content"
+   					android:entries="@array/class_year_array" />
  			</LinearLayout>
  			
  			<!-- Penn School Selector -->
@@ -59,9 +59,9 @@
 		    android:orientation="horizontal" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:paddingTop="10dip">
+		    android:paddingTop="0dip">
 		    	<TextView
-		    		android:layout_width="match_parent"
+		    		android:layout_width="wrap_content"
 		    		android:layout_height="wrap_content"
 		    		android:gravity="center_vertical|left"
 		    		android:textSize="15sp"
@@ -73,7 +73,8 @@
    					android:layout_width="fill_parent"
    					android:gravity="center_vertical|right"
    					android:paddingRight="10dip"
-   					android:layout_height="wrap_content" />		    	    
+   					android:layout_height="wrap_content"
+   					android:entries="@array/school_array"/>		    	    
         	</LinearLayout>
         	
         	<!-- Smoking Selector -->
