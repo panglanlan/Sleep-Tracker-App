@@ -33,6 +33,11 @@
 	<string name="excuse5">Screen Time (PC, iPad, TV, Kindle, etc)</string>
 	<string name="excuse6">Exercise</string>
 	
+	<!-- ModifyTimeActivity dialog strings -->
+	<string name="time_error_title">Error</string>
+	<string name="time_error_message">time set error: asleeptime later than awaketime.</string>
+	<string name="time_error_button">Reset</string>
+	
 	<!-- LogActivity Headings -->
 	<string name="rating_header">Rate Your Sleep</string>
 	<string name="excuse_header">Sleep Inhibitors</string>

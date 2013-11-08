@@ -61,9 +61,9 @@ public class ModifyTimeActivity extends SleepTrackerActivity {
 			long awakeTime = (Long)mSleepLogHelper.queryLog(mAsleepTime).get("AwakeTime");
 			if (time > awakeTime) {
 				new AlertDialog.Builder(this)
-				.setTitle("error")
-				.setMessage("time set error: asleeptime later than awaketime.")
-				.setNegativeButton( "Reset" ,
+				.setTitle(R.string.time_error_title)
+				.setMessage(R.string.time_error_message)
+				.setNegativeButton(R.string.time_error_button,
 						new DialogInterface.OnClickListener() {
 					public void onClick(
 							DialogInterface dialoginterface, int i){
@@ -78,9 +78,9 @@ public class ModifyTimeActivity extends SleepTrackerActivity {
 		else {
 			if (mAsleepTime > time) {
 				new AlertDialog.Builder(this)
-				.setTitle("error")
-				.setMessage("time set error: asleeptime later than awaketime.")
-				.setPositiveButton( "Reset" ,
+				.setTitle(R.string.time_error_title)
+				.setMessage(R.string.time_error_message)
+				.setPositiveButton(R.string.time_error_button,
 						new DialogInterface.OnClickListener() {
 					public void onClick(
 							DialogInterface dialoginterface, int i){
