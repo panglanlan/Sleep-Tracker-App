@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_layout"
-    android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color" >
+    android:background="@color/background_color"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
 	<ScrollView
 	    android:layout_width="match_parent"
 	    android:layout_height="0dip"
@@ -91,6 +93,7 @@
 			     android:orientation="horizontal" 
 			    android:layout_width="match_parent"
 			    android:layout_height="fill_parent">
+
 			    <TextView
 		        android:id="@+id/concentration_header"
 			    android:layout_width="match_parent"
@@ -100,15 +103,19 @@
 			    android:textSize="20sp"
 			    android:textStyle="bold"
 			    android:textColor="@color/off_white" />
-		    <RatingBar
-			    android:id="@+id/concentration_bar"
-			    android:isIndicator="true"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_gravity="center_horizontal"
-			    android:numStars="5"
-			    android:stepSize="1" />
 			</LinearLayout>
+
+		     <RatingBar
+		         android:id="@+id/concentration_bar"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_gravity="center_horizontal"
+		         android:clickable="true"
+		         android:duplicateParentState="true"
+		         android:isIndicator="true"
+		         android:longClickable="true"
+		         android:numStars="5"
+		         android:stepSize="1" />
 			
 		    <TextView
 			    android:layout_width="match_parent"
