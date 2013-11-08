@@ -38,9 +38,9 @@ public class TipsDatabase extends SleepTrackerDatabase {
 	}
 
 	protected final Tip[] TIPS = {
-		new Tip("Less sleep is associated with weight gain, while giving yourself an extra hour of sleep can equate to almost 15 pounds of weight loss.", new String[]{}),
 		new Tip("The Midnight Snack is your enemy. After eating you are less likely to settle down for bed.", new String[]{SUGAR}),
 		new Tip("The before-bed cigarette will keep you up at night.", new String[]{NICOTINE}),
+		new Tip("Less sleep is associated with weight gain, while giving yourself an extra hour of sleep can equate to almost 15 pounds of weight loss.", new String[]{}),
 		new Tip("If you MUST have dessert, switch it up and eat it before dinner. The earlier the sugar, the earlier to bed.", new String[]{SUGAR}),
 		new Tip("The weekends are not a time to sleep in! By developing a regular sleep schedule and waking up at the same time each day (even on weekends), you will improve the quality and duration of your sleep.", new String[]{}),
 		new Tip("Plan your work accordingly. Looking at blue light before bed (light from a computer screen or phone) makes it harder to fall asleep. By prioritizing your email-sending and paper writing earlier in the day, and your textbook reading later in the day, it will be easier for you to get to sleep.", new String[]{SCREEN_TIME}),
