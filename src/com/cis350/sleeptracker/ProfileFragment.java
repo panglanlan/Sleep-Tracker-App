@@ -1,8 +1,6 @@
-/**
- * 
- */
 package com.cis350.sleeptracker;
 
+import com.cis350.sleeptracker.database.TipsDatabase;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,12 +26,12 @@ public class ProfileFragment extends Fragment {
 	private RadioGroup mCoffeeSelector;
 	private RadioGroup mExerciseSelector;
 
-	protected static final String PREF_CLASS_YEAR = "classYear";
-	protected static final String PREF_SCHOOL = "school";
-	protected static final String PREF_SMOKING = "smoking";
-	protected static final String PREF_ALCOHOL = "alcohol";
-	protected static final String PREF_COFFEE = "coffee";
-	protected static final String PREF_EXERCISE = "exercise";
+	private static final String PREF_CLASS_YEAR = "classYear";
+	private static final String PREF_SCHOOL = "school";
+	private static final String PREF_SMOKING = TipsDatabase.getNicotine();
+	private static final String PREF_ALCOHOL = TipsDatabase.getAlcohol();
+	private static final String PREF_COFFEE = TipsDatabase.getCaffeine();
+	private static final String PREF_EXERCISE = TipsDatabase.getExercise();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -9,7 +9,7 @@ public class UserHabits {
 
 	public UserHabits(SharedPreferences preferences) {
 		habits = new HashMap<String, Boolean>();
-		for (String excuse : SleepTrackerDatabase.EXCUSES) {
+		for (String excuse : SleepTrackerDatabase.getExcuses()) {
 			habits.put(excuse, preferences.getBoolean(excuse, true));
 		}
 	}

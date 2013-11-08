@@ -122,14 +122,15 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 		return (mDb.insert(TABLE_NAME, null, values) > 0);
 	}
 
-	public boolean updateConcentration(String concentration){
+	public boolean updateConcentration(long asleepTime,String concentration){
 		ContentValues values = new ContentValues();
-		Cursor cursor=mDb.rawQuery(SELECT_LAST_ASLEEP_TIME,null);
-		long asleeptime = 0;
-		while(cursor.moveToNext())
-			asleeptime=cursor.getLong(0);
+		if(asleepTime==0){
+			Cursor cursor=mDb.rawQuery(SELECT_LAST_ASLEEP_TIME,null);
+			while(cursor.moveToNext())
+				asleepTime=cursor.getLong(0);
+		}
 		values.put(CONCENTRATION, concentration);
-		String whereClause=ASLEEP_TIME+ "="+asleeptime;
+		String whereClause=ASLEEP_TIME+ "="+asleepTime;
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
 	

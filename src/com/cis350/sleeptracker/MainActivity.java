@@ -105,8 +105,7 @@ public class MainActivity extends SleepTrackerActivity {
 		}
 		editor.putBoolean(IS_ASLEEP, !wasAsleep);
 		editor.commit();
-		mMainLinearLayout.setBackgroundColor(getResources().getColor(
-				newBackgroundColor));
+		mMainLinearLayout.setBackgroundColor(getResources().getColor(newBackgroundColor));
 		mSleepWakeButton
 				.setText(getResources().getString(newSleepWakeButtonString));
 	}
@@ -249,10 +248,9 @@ public class MainActivity extends SleepTrackerActivity {
 
 		@Override
 		public void onClick(DialogInterface dialog, int id) {
-
 			String[] concentration_array=getResources().getStringArray(R.array.concentration_array);
 			String concentration=concentration_array[id];
-			mSleepLogHelper.updateConcentration(concentration);
+			mSleepLogHelper.updateConcentration(0, concentration);
 			podcastAlertDialog.show();
 		}
 	}

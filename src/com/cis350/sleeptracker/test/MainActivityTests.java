@@ -77,7 +77,7 @@ public class MainActivityTests extends
 		ArrayList<String> tipsWithAlcohol;
 		
 		SharedPreferences.Editor editor = mPreferences.edit();
-		for(String excuse : SleepTrackerDatabase.EXCUSES){
+		for(String excuse : SleepTrackerDatabase.getExcuses()){
 			editor.putBoolean(excuse, false);
 		}
 		editor.commit();

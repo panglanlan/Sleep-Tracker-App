@@ -91,6 +91,7 @@
 	<string name="rating_header">Rate Your Sleep</string>
 	<string name="excuse_header">Sleep Inhibitors</string>
 	<string name="comment_header">Additional Comments</string>
+	<string name="concentration_header">Rate Your concentration(only for sleep)</string>
 	
 	<!-- MainActivity dialog strings -->
 	<string name="podcast_dialog_title">Podcast</string>
@@ -101,10 +102,10 @@
 	<string name="delete_dialog_message">Would you like to delete this entry?</string>
 	<string name="concentration_dialog_title">Please rate your concentration level</string>
 	<string-array name="concentration_array">
-	    <item>"1"</item>
-	    <item>"2"</item>
-	    <item>"3"</item>
-	    <item>"4"</item>
-	    <item>"5"</item>
+	    <item>"Level 1"</item>
+	    <item>"Level 2"</item>
+	    <item>"Level 3"</item>
+	    <item>"Level 4"</item>
+	    <item>"Level 5"</item>
 	</string-array>
 </resources>

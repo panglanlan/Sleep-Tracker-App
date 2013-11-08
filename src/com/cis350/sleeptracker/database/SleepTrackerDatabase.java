@@ -8,7 +8,35 @@ public class SleepTrackerDatabase {
 	protected static final String SCREEN_TIME = "screen_time";
 	protected static final String EXERCISE = "exercise";
 
-	public static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
+	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
 		SUGAR, SCREEN_TIME, EXERCISE };
+
+	public static String getCaffeine() {
+		return CAFFEINE;
+	}
+
+	public static String getAlcohol() {
+		return ALCOHOL;
+	}
+
+	public static String getNicotine() {
+		return NICOTINE;
+	}
+
+	public static String getSugar() {
+		return SUGAR;
+	}
+
+	public static String getScreenTime() {
+		return SCREEN_TIME;
+	}
+
+	public static String getExercise() {
+		return EXERCISE;
+	}
+
+	public static String[] getExcuses() {
+		return EXCUSES;
+	}
 	
 }
