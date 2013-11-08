@@ -179,7 +179,7 @@ public class ChartActivity extends SleepTrackerActivity {
 
 		excusesTable.addView(columnLabels, tableLayoutParams);
 
-		String[] excuses = SleepLogHelper.EXCUSES;
+		String[] excuses = SleepLogHelper.getExcuses();
 		for (int i = 0; i < excuses.length; i++) {
 			TableRow tr = modifiedtr(rowLayoutParams, excuses, i);
 			// wrong table display is caused by the following line is outside the
