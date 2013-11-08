@@ -1,15 +1,18 @@
 package com.cis350.sleeptracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.WindowManager;
-import android.support.v4.app.FragmentActivity;
 
 public class SleepTrackerActivity extends FragmentActivity implements
 		SensorEventListener {
@@ -54,10 +57,14 @@ public class SleepTrackerActivity extends FragmentActivity implements
 		mSensorManager.unregisterListener(this);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
+	/*
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { MenuInflater
+	 * inflater = getMenuInflater(); inflater.inflate(R.menu.action_menu, menu);
+	 * return super.onCreateOptionsMenu(menu); }
+	 * 
+	 * @Override public boolean onOptionsItemSelected(MenuItem item) { switch
+	 * (item.getItemId()) { case R.id.profile_action: Intent intent = new
+	 * Intent(this, ProfileActivity.class); startActivity(intent); return true;
+	 * default: return false; } }
+	 */
 }

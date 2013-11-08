@@ -16,9 +16,10 @@ public class ProfileActivity extends SleepTrackerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-		((SleepTrackerApplication) this.getApplicationContext())
-				.customizeActionBar(this);
-
+		/*
+		 * ((SleepTrackerApplication) this.getApplicationContext())
+		 * .customizeActionBar(this);
+		 */
 	}
 
 	@Override

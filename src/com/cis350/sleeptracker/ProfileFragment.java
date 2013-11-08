@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.cis350.sleeptracker;
 
 import com.cis350.sleeptracker.database.TipsDatabase;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
