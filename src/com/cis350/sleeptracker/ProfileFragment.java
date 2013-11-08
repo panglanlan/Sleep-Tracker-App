@@ -28,12 +28,12 @@ public class ProfileFragment extends Fragment {
 	private RadioGroup mCoffeeSelector;
 	private RadioGroup mExerciseSelector;
 
-	private static final String PREF_CLASS_YEAR = "classYear";
-	private static final String PREF_SCHOOL = "school";
-	private static final String PREF_SMOKING = "smoking";
-	private static final String PREF_ALCOHOL = "alcohol";
-	private static final String PREF_COFFEE = "coffee";
-	private static final String PREF_EXERCISE = "exercise";
+	protected static final String PREF_CLASS_YEAR = "classYear";
+	protected static final String PREF_SCHOOL = "school";
+	protected static final String PREF_SMOKING = "smoking";
+	protected static final String PREF_ALCOHOL = "alcohol";
+	protected static final String PREF_COFFEE = "coffee";
+	protected static final String PREF_EXERCISE = "exercise";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
