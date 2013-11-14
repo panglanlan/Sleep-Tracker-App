@@ -16,7 +16,7 @@ import android.util.Log;
 public class TipsDatabase extends SleepTrackerDatabase {
 	private static final String TAG = "TipsDatabase";
 	private static final String DATABASE_NAME = "TipsDatabase";
-	private static final int TABLE_VERSION = 1;
+	private static final int TABLE_VERSION = 2;
 
 	private class Tip {
 		private String tip;
