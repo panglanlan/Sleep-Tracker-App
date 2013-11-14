@@ -5,9 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,7 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.cis350.sleeptracker.database.SleepLogHelper;
+import com.cis350.sleeptracker.database.SleepTrackerDatabase;
 
 
 public class LogActivity extends SleepTrackerActivity {
@@ -144,10 +147,10 @@ public class LogActivity extends SleepTrackerActivity {
 		}
 		
 		this.populatesleepTypeSpinners();
-		SetCheckBox();
+		setExcusesCheckBox();
 	}
 
-	private void SetCheckBox() {
+	private void setExcusesCheckBox() {
 		for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) {
 			boolean checked = (Integer) mSleepLogHelper.queryLog(mAsleepTime).get(
 					(SleepLogHelper.getExcuses())[i]) > 0;
@@ -199,7 +202,25 @@ public class LogActivity extends SleepTrackerActivity {
 			excuses[i] = checkBox.isChecked();
 		}
 		mSleepLogHelper.updateExcuses(mAsleepTime, excuses);
+		updatePreferences(excuses);
+
 		finish();
+	}
+
+	private void updatePreferences(boolean[] excuses) {
+		if (mPreferences != null) {
+			Editor mPrefEditor = mPreferences.edit();
+			String[] excusesName = SleepTrackerDatabase.getExcuses();
+			for(int i = 0; i < excusesName.length; i++){
+				if(excuses[i]){
+					int oldValue = mPreferences.getInt(excusesName[i], 0);
+					if(oldValue < SleepTrackerDatabase.getMaxExcuseValue()){
+						mPrefEditor.putInt(excusesName[i], oldValue + 1);
+					}
+				}
+			}
+			mPrefEditor.apply();
+		}
 	}
 
 	public void onClickEditSleep(View view) {

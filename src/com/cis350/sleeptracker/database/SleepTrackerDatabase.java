@@ -7,6 +7,7 @@ public class SleepTrackerDatabase {
 	protected static final String SUGAR = "sugar";
 	protected static final String SCREEN_TIME = "screen_time";
 	protected static final String EXERCISE = "exercise";
+	protected static final int MAX_EXCUSE_VALUE = 5;
 
 	protected static final String[] EXCUSES = { CAFFEINE, ALCOHOL, NICOTINE,
 		SUGAR, SCREEN_TIME, EXERCISE };
@@ -38,5 +39,9 @@ public class SleepTrackerDatabase {
 	public static String[] getExcuses() {
 		return EXCUSES;
 	}
-	
+
+	public static int getMaxExcuseValue() {
+		return MAX_EXCUSE_VALUE;
+	}
+
 }
