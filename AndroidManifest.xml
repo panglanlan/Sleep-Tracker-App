@@ -17,7 +17,7 @@
     <application
         android:name="com.cis350.sleeptracker.SleepTrackerApplication"
         android:allowBackup="true"
-        android:icon="@drawable/penn_logo"
+        android:icon="@drawable/icon"
         android:logo="@drawable/shs_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >

@@ -82,7 +82,30 @@ public class DataActivity extends SleepTrackerActivity {
 	protected void onResume() {
 		super.onResume();
 		mDataList = mSleepLogHelper.queryAll();
-		mDataListView.setAdapter(new SimpleAdapter(this, mDataList,
-				R.layout.data_item, SleepLogHelper.ITEMS, SleepLogHelper.ITEM_IDS));
+		if (mDataList.size() > 0) {
+			mDataListView.setAdapter(new SimpleAdapter(this, mDataList,
+					R.layout.data_item, SleepLogHelper.ITEMS, SleepLogHelper.ITEM_IDS));
+		} else {
+			final AlertDialog noDataAlertDialog = buildDialog(getResources()
+					.getString(R.string.no_data_dialog_title),
+					getResources().getString(R.string.no_data_dialog_message));
+			noDataAlertDialog.show();
+		}
+	}
+
+	private AlertDialog buildDialog(String title, String message) {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(title);
+		dialogBuilder.setMessage(message);
+		dialogBuilder.setCancelable(false);
+		dialogBuilder.setPositiveButton("OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+						finish();
+					}
+				});
+		return dialogBuilder.create();
 	}
 }

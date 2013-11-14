@@ -1,7 +1,5 @@
 package com.cis350.sleeptracker;
 
-import java.util.Arrays;
-import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,36 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import com.cis350.sleeptracker.database.TipsDatabase;
 
 /** @author Michael Collis
- * @version 20131020 */
+ * @version 20131112 */
 public class ProfileFragment extends Fragment {
 
 	private SharedPreferences mPreferences;
 	private Spinner mClassYearSpinner;
 	private Spinner mSchoolSpinner;
-	private RadioGroup mSmokingSelector;
-	private RadioGroup mAlcoholSelector;
-	private RadioGroup mCoffeeSelector;
-	private RadioGroup mExerciseSelector;
-	private List<RadioButton> mSmokingList;
-	private List<RadioButton> mAlcoholList;
-	private List<RadioButton> mCoffeeList;
-	private List<RadioButton> mExerciseList;
+	private Spinner mGenderSpinner;
 
 	private ArrayAdapter<String> mClassYearAdapter;
 	private ArrayAdapter<String> mSchoolAdapter;
+	private ArrayAdapter<String> mGenderAdapter;
 
 	private static final String PREF_CLASS_YEAR = "classYear";
 	private static final String PREF_SCHOOL = "school";
-	private static final String PREF_SMOKING = TipsDatabase.getNicotine();
-	private static final String PREF_ALCOHOL = TipsDatabase.getAlcohol();
-	private static final String PREF_COFFEE = TipsDatabase.getCaffeine();
-	private static final String PREF_EXERCISE = TipsDatabase.getExercise();
+	private static final String PREF_GENDER = "gender";
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -56,7 +42,6 @@ public class ProfileFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_profile_questions,
 				container, false);
 		buildSpinners(view);
-		buildRadioButtons(view);
 		return view;
 	}
 
@@ -72,26 +57,11 @@ public class ProfileFragment extends Fragment {
 					.getStringArray(R.array.class_year_array)[0]);
 			String school = mPreferences.getString(PREF_SCHOOL, getResources()
 					.getStringArray(R.array.school_array)[0]);
+			String gender = mPreferences.getString(PREF_GENDER, getResources()
+					.getStringArray(R.array.gender_array)[0]);
 			mClassYearSpinner.setSelection(mClassYearAdapter.getPosition(classYear));
 			mSchoolSpinner.setSelection(mSchoolAdapter.getPosition(school));
-
-			int smokingPref = mPreferences.getInt(PREF_SMOKING, -1);
-			int alcoholPref = mPreferences.getInt(PREF_ALCOHOL, -1);
-			int coffeePref = mPreferences.getInt(PREF_COFFEE, -1);
-			int exercisePref = mPreferences.getInt(PREF_EXERCISE, -1);
-
-			if (smokingPref >= 0) {
-				mSmokingList.get(smokingPref).setChecked(true);
-			}
-			if (alcoholPref >= 0) {
-				mAlcoholList.get(alcoholPref).setChecked(true);;
-			}
-			if (coffeePref >= 0) {
-				mCoffeeList.get(coffeePref).setChecked(true);
-			}
-			if (exercisePref >= 0) {
-				mExerciseList.get(exercisePref).setChecked(true);
-			}
+			mGenderSpinner.setSelection(mGenderAdapter.getPosition(gender));
 		}
 	}
 
@@ -112,45 +82,14 @@ public class ProfileFragment extends Fragment {
 		mSchoolAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSchoolSpinner.setAdapter(mSchoolAdapter);
-	}
 
-	private void buildRadioButtons(View view) {
-		mSmokingSelector = (RadioGroup) view
-				.findViewById(R.id.profile_smoking_selector);
-		mAlcoholSelector = (RadioGroup) view
-				.findViewById(R.id.profile_alcohol_selector);
-		mCoffeeSelector = (RadioGroup) view
-				.findViewById(R.id.profile_coffee_selector);
-		mExerciseSelector = (RadioGroup) view
-				.findViewById(R.id.profile_exercise_selector);
-
-		mSmokingList = Arrays.asList(new RadioButton[] {
-				(RadioButton) view.findViewById(R.id.profile_smoking_radio_1),
-				(RadioButton) view.findViewById(R.id.profile_smoking_radio_2),
-				(RadioButton) view.findViewById(R.id.profile_smoking_radio_3),
-				(RadioButton) view.findViewById(R.id.profile_smoking_radio_4),
-				(RadioButton) view.findViewById(R.id.profile_smoking_radio_5) });
-
-		mAlcoholList = Arrays.asList(new RadioButton[] {
-				(RadioButton) view.findViewById(R.id.profile_alcohol_radio_1),
-				(RadioButton) view.findViewById(R.id.profile_alcohol_radio_2),
-				(RadioButton) view.findViewById(R.id.profile_alcohol_radio_3),
-				(RadioButton) view.findViewById(R.id.profile_alcohol_radio_4),
-				(RadioButton) view.findViewById(R.id.profile_alcohol_radio_5) });
-
-		mCoffeeList = Arrays.asList(new RadioButton[] {
-				(RadioButton) view.findViewById(R.id.profile_coffee_radio_1),
-				(RadioButton) view.findViewById(R.id.profile_coffee_radio_2),
-				(RadioButton) view.findViewById(R.id.profile_coffee_radio_3),
-				(RadioButton) view.findViewById(R.id.profile_coffee_radio_4),
-				(RadioButton) view.findViewById(R.id.profile_coffee_radio_5) });
-
-		mExerciseList = Arrays.asList(new RadioButton[] {
-				(RadioButton) view.findViewById(R.id.profile_exercise_radio_1),
-				(RadioButton) view.findViewById(R.id.profile_exercise_radio_2),
-				(RadioButton) view.findViewById(R.id.profile_exercise_radio_3),
-				(RadioButton) view.findViewById(R.id.profile_exercise_radio_4),
-				(RadioButton) view.findViewById(R.id.profile_exercise_radio_5) });
+		mGenderSpinner = (Spinner) view.findViewById(R.id.profile_gender_spinner);
+		mGenderAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_dropdown_item, getResources()
+						.getStringArray(R.array.gender_array));
+		mGenderAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mGenderSpinner.setAdapter(mGenderAdapter);
 	}
 
 	protected void saveProfile() {
@@ -160,42 +99,8 @@ public class ProfileFragment extends Fragment {
 					(String) mClassYearSpinner.getSelectedItem());
 			mPrefEditor.putString(PREF_SCHOOL,
 					(String) mSchoolSpinner.getSelectedItem());
-
-			int smokingChecked = mSmokingSelector.getCheckedRadioButtonId();
-			if (smokingChecked != -1) {
-				int smokingPref = mSmokingSelector.indexOfChild(getView().findViewById(
-						smokingChecked));
-				mPrefEditor.putInt(PREF_SMOKING, smokingPref);
-			} else {
-				mPrefEditor.putInt(PREF_SMOKING, -1);
-			}
-
-			int alcoholChecked = mAlcoholSelector.getCheckedRadioButtonId();
-			if (alcoholChecked != -1) {
-				int alcoholPref = mAlcoholSelector.indexOfChild(getView().findViewById(
-						alcoholChecked));
-				mPrefEditor.putInt(PREF_ALCOHOL, alcoholPref);
-			} else {
-				mPrefEditor.putInt(PREF_ALCOHOL, -1);
-			}
-
-			int coffeeChecked = mCoffeeSelector.getCheckedRadioButtonId();
-			if (coffeeChecked != -1) {
-				int coffeePref = mCoffeeSelector.indexOfChild(getView().findViewById(
-						coffeeChecked));
-				mPrefEditor.putInt(PREF_COFFEE, coffeePref);
-			} else {
-				mPrefEditor.putInt(PREF_COFFEE, -1);
-			}
-
-			int exerciseChecked = mExerciseSelector.getCheckedRadioButtonId();
-			if (exerciseChecked != -1) {
-				int exercisePref = mExerciseSelector.indexOfChild(getView()
-						.findViewById(exerciseChecked));
-				mPrefEditor.putInt(PREF_EXERCISE, exercisePref);
-			} else {
-				mPrefEditor.putInt(PREF_EXERCISE, -1);
-			}
+			mPrefEditor.putString(PREF_GENDER,
+					(String) mGenderSpinner.getSelectedItem());
 			mPrefEditor.apply();
 		}
 	}
