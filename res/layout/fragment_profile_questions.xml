@@ -31,6 +31,29 @@
    			android:dividerHeight="1sp"
 	    	android:padding="10dip" >
 	    	
+	    	<!-- Gender Selector --> 
+	    	<LinearLayout
+		    android:orientation="horizontal" 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" 
+		    android:paddingTop="10dip">
+		    	<TextView
+		    		android:layout_width="wrap_content"
+		    		android:layout_height="wrap_content"
+		    		android:gravity="center_vertical|left"
+		    		android:textSize="15sp"
+		    		android:paddingLeft="10dip"
+		    		android:text="@string/profile_gender_text"
+		    		android:textColor="@color/off_white" />
+	      		<Spinner
+   					android:id="@+id/profile_gender_spinner"
+   					android:layout_width="fill_parent"
+   					android:gravity="center_vertical|right"
+   					android:paddingRight="10dip"
+   					android:layout_height="wrap_content"
+   					android:entries="@array/gender_array" />
+ 			</LinearLayout>
+ 			
 	    	<!-- Class Year Selector --> 
 	    	<LinearLayout
 		    android:orientation="horizontal" 
@@ -77,229 +100,6 @@
    					android:entries="@array/school_array"/>		    	    
         	</LinearLayout>
         	
-        	<!-- Smoking Selector -->
- 			<LinearLayout
-		    android:orientation="vertical" 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingTop="10dip">
-		    	<TextView
-		    		android:layout_width="match_parent"
-		    		android:layout_height="wrap_content"
-		    		android:gravity="center_vertical|left"
-		    		android:textSize="15sp"
-		    		android:paddingLeft="10dip"
-		    		android:text="@string/profile_smoking_text"
-		    		android:textColor="@color/off_white" />
-		    	<RadioGroup 
-		    	    android:id="@+id/profile_smoking_selector"
-		    	    android:layout_width="match_parent"
-		    		android:layout_height="wrap_content">
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_smoking_radio_1"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_smoking_1" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_smoking_radio_2"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_smoking_2" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_smoking_radio_3"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_smoking_3" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_smoking_radio_4"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_smoking_4" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_smoking_radio_5"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_smoking_5" 
-		    	        />		    	    		    	    
-		    	</RadioGroup>		    	    
-        	</LinearLayout>      
- 			
- 			<!-- Alcohol Selector -->
- 			<LinearLayout
-		    android:orientation="vertical" 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingTop="10dip">
-		    	<TextView
-		    		android:layout_width="match_parent"
-		    		android:layout_height="wrap_content"
-		    		android:gravity="center_vertical|left"
-		    		android:textSize="15sp"
-		    		android:paddingLeft="10dip"
-		    		android:text="@string/profile_alcohol_text"
-		    		android:textColor="@color/off_white" />
-		    	<RadioGroup 
-		    	    android:id="@+id/profile_alcohol_selector"
-		    	    android:layout_width="match_parent"
-		    		android:layout_height="wrap_content">
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_alcohol_radio_1"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_alcohol_1" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_alcohol_radio_2"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_alcohol_2" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_alcohol_radio_3"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_alcohol_3" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_alcohol_radio_4"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_alcohol_4" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_alcohol_radio_5"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_alcohol_5" 
-		    	        />		    	    		    	    
-		    	</RadioGroup>		    		                
-        	</LinearLayout>    
- 			
- 			<!-- Coffee Selector -->
- 			<LinearLayout
-		    android:orientation="vertical" 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingTop="10dip">
-		    	<TextView
-		    		android:layout_width="match_parent"
-		    		android:layout_height="wrap_content"
-		    		android:gravity="center_vertical|left"
-		    		android:textSize="15sp"
-		    		android:paddingLeft="10dip"
-		    		android:text="@string/profile_coffee_text"
-		    		android:textColor="@color/off_white" />
-		    	<RadioGroup 
-		    	    android:id="@+id/profile_coffee_selector"
-		    	    android:layout_width="match_parent"
-		    		android:layout_height="wrap_content">
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_coffee_radio_1"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_coffee_1" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_coffee_radio_2"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_coffee_2" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_coffee_radio_3"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_coffee_3" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_coffee_radio_4"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_coffee_4" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_coffee_radio_5"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_coffee_5" 
-		    	        />		    	    		    	    
-		    	</RadioGroup>		    		            
-        	</LinearLayout>
-        	
- 			<!-- Exercise Selector -->
- 			<LinearLayout
-		    android:orientation="vertical" 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingTop="10dip">
-		    	<TextView
-		    		android:layout_width="match_parent"
-		    		android:layout_height="wrap_content"
-		    		android:gravity="center_vertical|left"
-		    		android:textSize="15sp"
-		    		android:paddingLeft="10dip"
-		    		android:text="@string/profile_exercise_text"
-		    		android:textColor="@color/off_white" />	            
-		    	<RadioGroup 
-		    	    android:id="@+id/profile_exercise_selector"
-		    	    android:layout_width="match_parent"
-		    		android:layout_height="wrap_content">
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_exercise_radio_1"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_exercise_1" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_exercise_radio_2"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_exercise_2" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_exercise_radio_3"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_exercise_3" 
-		    	        />		    	    
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_exercise_radio_4"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_exercise_4" 
-		    	        />
-		    	    <RadioButton 
-		    	        android:id="@+id/profile_exercise_radio_5"
-           				android:layout_width="wrap_content"
-            			android:layout_height="wrap_content"
-            			android:textSize="12sp"
-            			android:text="@string/profile_exercise_5" 
-		    	        />		    	    		    	    
-		    	</RadioGroup>	    	    
-        	</LinearLayout>    
  		</LinearLayout>	
     </LinearLayout>
 </ScrollView>
