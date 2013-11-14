@@ -93,6 +93,11 @@
 	<string name="excuse_header">Sleep Inhibitors</string>
 	<string name="comment_header">Additional Comments</string>
 	<string name="concentration_header">Rate Your concentration(only for sleep)</string>
+	<string name="sleeptype_header">Sleep or Nap?</string>
+	<string-array name="sleeptype_array">
+	    <item>"Sleep"</item>
+	    <item>"Nap"</item>
+	</string-array>
 	
 	<!-- MainActivity dialog strings -->
 	<string name="podcast_dialog_title">Podcast</string>

@@ -39,10 +39,22 @@ public class LogActivity extends SleepTrackerActivity {
 	private RatingBar mRatingBar;
 	private EditText mCommentBox;
 	private String mTypeOfSleep;
-	//private RatingBar mConcentrationBar;
 	private Spinner mconcentration_spinner;
-	private static final float rotationX=90;
+	private Spinner msleeptype_spinner;
 	
+	public void setAsleepTime(long asleeptime){
+		this.mAsleepTime=asleeptime;
+		
+	}
+	
+	public float getRating(){
+		return this.mRatingBar.getRating();
+	}
+	
+	public long getmAwakeTime(){
+		return this.mAwakeTime;
+	}
+
 	private void populateSpinners() {
 		mconcentration_spinner = (Spinner)findViewById(
 				R.id.concentration_spinner);
@@ -58,14 +70,23 @@ public class LogActivity extends SleepTrackerActivity {
 		}
 		
 	}
+	
+	private void populatesleepTypeSpinners() {
+		msleeptype_spinner = (Spinner)findViewById(
+				R.id.sleeptype_spinner);
+		ArrayAdapter<CharSequence> sleeptypeAdapter = ArrayAdapter.createFromResource(this,
+		        R.array.sleeptype_array, android.R.layout.simple_spinner_item);
+		sleeptypeAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		msleeptype_spinner.setAdapter(sleeptypeAdapter);
+		msleeptype_spinner.setSelection(sleeptypeAdapter.getPosition(this.mTypeOfSleep));
 		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
-		 * MainActivity.customizeActionBar(this); %cause a compilation error;
-		 */
-		// invoking the customizeActionBar method as following:
+		
 		SleepTrackerApplication applicationContext = ((SleepTrackerApplication) this
 				.getApplicationContext());
 		setContentView(R.layout.activity_log);
@@ -89,10 +110,8 @@ public class LogActivity extends SleepTrackerActivity {
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		mRatingBar = (RatingBar) findViewById(R.id.rating_bar);
 		mCommentBox = (EditText) findViewById(R.id.comment_box);
-		//mConcentrationBar=(RatingBar)findViewById(R.id.concentration_bar);
 		
 		if((Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap")){
-			//mConcentrationBar.setVisibility(View.GONE);
 			((TextView)findViewById(R.id.concentration_header)).setVisibility(View.GONE);
 			((Spinner)findViewById(R.id.concentration_spinner)).setVisibility(View.GONE);
 		}
@@ -106,7 +125,6 @@ public class LogActivity extends SleepTrackerActivity {
 
 	private void queryLogAndInit() {
 		int rating;
-		//int concentration_rating;
 		String comments;
 		Boolean wasNap;
 
@@ -125,6 +143,7 @@ public class LogActivity extends SleepTrackerActivity {
 			mTypeOfSleep = getResources().getString(R.string.night_sleep);
 		}
 		
+		this.populatesleepTypeSpinners();
 		SetCheckBox();
 	}
 
@@ -165,6 +184,8 @@ public class LogActivity extends SleepTrackerActivity {
 	}
 
 	public void onClickSave(View view) {
+		
+		mSleepLogHelper.updateSleepType(mAsleepTime, (String)msleeptype_spinner.getSelectedItem());
 		
 		if(!(Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap"))
 			mSleepLogHelper.updateConcentration(mAsleepTime, (String)mconcentration_spinner.getSelectedItem());
@@ -225,7 +246,8 @@ public class LogActivity extends SleepTrackerActivity {
 	private void setTimeDisplay(String totalSleep, String fAsleepTime,
 			String fAwakeTime) {
 		TextView totalSleepText = (TextView) findViewById(R.id.total_sleep);
-		totalSleepText.setText(mTypeOfSleep + ": " + totalSleep);
+		totalSleepText.setText(totalSleep);
+		
 		TextView asleepText = (TextView) findViewById(R.id.asleep_time);
 		asleepText.setText(fAsleepTime);
 		TextView awakeText = (TextView) findViewById(R.id.awake_time);
