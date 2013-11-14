@@ -89,33 +89,31 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="1sp"
 		        android:background="@color/off_white" />
+		     
+		    <TextView
+		    	    android:id="@+id/concentration_header"
+		    		android:layout_width="wrap_content"
+		    		android:layout_height="wrap_content"
+		    		android:gravity="center_vertical|left"
+		    		android:textSize="25sp"
+		    		android:paddingLeft="10dip"
+		    		android:text="@string/concentration_header"
+		    		android:textColor="@color/off_white" />
+		    
 		     <LinearLayout
-			     android:orientation="horizontal" 
-			    android:layout_width="match_parent"
-			    android:layout_height="fill_parent">
+				android:orientation="horizontal" 
+		    	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content" 
+		    	android:paddingTop="10dip">
+	      		<Spinner
+   					android:id="@+id/concentration_spinner"
+   					android:layout_width="fill_parent"
+   					android:gravity="center_vertical|right"
+   					android:paddingRight="10dip"
+   					android:layout_height="wrap_content" />
+ 			</LinearLayout>
 
-			    <TextView
-		        android:id="@+id/concentration_header"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:gravity="center_horizontal"
-			    android:text="@string/concentration_header"
-			    android:textSize="20sp"
-			    android:textStyle="bold"
-			    android:textColor="@color/off_white" />
-			</LinearLayout>
-
-		     <RatingBar
-		         android:id="@+id/concentration_bar"
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_gravity="center_horizontal"
-		         android:clickable="true"
-		         android:duplicateParentState="true"
-		         android:isIndicator="true"
-		         android:longClickable="true"
-		         android:numStars="5"
-		         android:stepSize="1" />
+		    
 			
 		    <TextView
 			    android:layout_width="match_parent"

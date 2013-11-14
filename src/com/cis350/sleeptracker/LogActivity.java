@@ -1,21 +1,24 @@
+
 package com.cis350.sleeptracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.cis350.sleeptracker.database.SleepLogHelper;
+
 
 public class LogActivity extends SleepTrackerActivity {
 	private static final int[] EXCUSE_CHECKBOXES = { R.id.excuse_checkbox1,
@@ -25,7 +28,8 @@ public class LogActivity extends SleepTrackerActivity {
 			R.id.excuse3, R.id.excuse4, R.id.excuse5, R.id.excuse6 };
 	private static final int EDITSLEEPCLK = 1;
 	private static final int EDITWAKECLK = 2;
-
+	private static final String CONCENTRATION="concentration";
+	
 	private SharedPreferences mPreferences;
 	private LinearLayout mLinearLayout;
 	private long mAsleepTime;
@@ -35,8 +39,26 @@ public class LogActivity extends SleepTrackerActivity {
 	private RatingBar mRatingBar;
 	private EditText mCommentBox;
 	private String mTypeOfSleep;
-	private RatingBar mConcentrationBar;
-
+	//private RatingBar mConcentrationBar;
+	private Spinner mconcentration_spinner;
+	private static final float rotationX=90;
+	
+	private void populateSpinners() {
+		mconcentration_spinner = (Spinner)findViewById(
+				R.id.concentration_spinner);
+		ArrayAdapter<CharSequence> concentrationAdapter = ArrayAdapter.createFromResource(this,
+		        R.array.concentration_array, android.R.layout.simple_spinner_item);
+		concentrationAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mconcentration_spinner.setAdapter(concentrationAdapter);
+		
+		String s_concentration=(String) mSleepLogHelper.queryLog(mAsleepTime).get(CONCENTRATION);
+		if(s_concentration!=null&&!s_concentration.isEmpty()){
+			mconcentration_spinner.setSelection(concentrationAdapter.getPosition(s_concentration));
+		}
+		
+	}
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,26 +83,22 @@ public class LogActivity extends SleepTrackerActivity {
 		}
 		mAsleepTime = getIntent().getLongExtra(
 				SleepLogHelper.ITEM_ASLEEP_TIME_LONG, 0);
-		/*
-		 * maybe we can add some extra code here to make the app decides whether it
-		 * is a sleep or nap in default? so when the prompt asking the user to
-		 * choose whether it is a nap or sleep, we could have a third button as
-		 * "NA", if the user choose NA, we could use this default value? this may
-		 * lead to some modification for SleepLogHelper.java as well, not sure if
-		 * that's reasonable. since we have SleepLogHelper.NAP=1 and sleep as 0,
-		 * maybe can use -1 for NA?
-		 */
-
+		
 		mAwakeTime = 0;
 		mSleepLogHelper = new SleepLogHelper(this);
 		mSimpleDateFormat = new SimpleDateFormat("MMM dd hh:mm a", Locale.US);
 		mRatingBar = (RatingBar) findViewById(R.id.rating_bar);
 		mCommentBox = (EditText) findViewById(R.id.comment_box);
-		mConcentrationBar=(RatingBar)findViewById(R.id.concentration_bar);
+		//mConcentrationBar=(RatingBar)findViewById(R.id.concentration_bar);
 		
 		if((Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap")){
-			mConcentrationBar.setVisibility(View.GONE);
+			//mConcentrationBar.setVisibility(View.GONE);
 			((TextView)findViewById(R.id.concentration_header)).setVisibility(View.GONE);
+			((Spinner)findViewById(R.id.concentration_spinner)).setVisibility(View.GONE);
+		}
+		else{
+			
+			this.populateSpinners();
 		}
 		
 		queryLogAndInit();
@@ -88,7 +106,7 @@ public class LogActivity extends SleepTrackerActivity {
 
 	private void queryLogAndInit() {
 		int rating;
-		int concentration_rating;
+		//int concentration_rating;
 		String comments;
 		Boolean wasNap;
 
@@ -103,12 +121,7 @@ public class LogActivity extends SleepTrackerActivity {
 		if (wasNap) {
 			mTypeOfSleep = getResources().getString(R.string.nap);
 		} else {
-			String s=(String) mSleepLogHelper.queryLog(mAsleepTime).get("concentration");
-			if(s!=null&&!s.isEmpty()){
-				String concentration[]=s.split(" ");
-				concentration_rating=Integer.parseInt(concentration[1]);
-				mConcentrationBar.setRating(concentration_rating);
-			}
+			this.populateSpinners();
 			mTypeOfSleep = getResources().getString(R.string.night_sleep);
 		}
 		
@@ -118,7 +131,7 @@ public class LogActivity extends SleepTrackerActivity {
 	private void SetCheckBox() {
 		for (int i = 0; i < EXCUSE_CHECKBOXES.length; i++) {
 			boolean checked = (Integer) mSleepLogHelper.queryLog(mAsleepTime).get(
-					SleepLogHelper.getExcuses()[i]) > 0;
+					(SleepLogHelper.getExcuses())[i]) > 0;
 			CheckBox checkBox = (CheckBox) findViewById(EXCUSE_CHECKBOXES[i]);
 			checkBox.setChecked(checked);
 		}
@@ -147,20 +160,14 @@ public class LogActivity extends SleepTrackerActivity {
 		if (elapsedTime < 0) {
 			totalSleep = getResources().getString(R.string.pending);
 		}
-		/*
-		 * TextView totalSleepText = (TextView) findViewById(R.id.total_sleep);
-		 * totalSleepText.setText(mTypeOfSleep + ": " + totalSleep); TextView
-		 * asleepText = (TextView) findViewById(R.id.asleep_time);
-		 * asleepText.setText(fAsleepTime); TextView awakeText = (TextView)
-		 * findViewById(R.id.awake_time); awakeText.setText(fAwakeTime);
-		 */
+		
 		setTimeDisplay(totalSleep, fAsleepTime, fAwakeTime);
 	}
 
 	public void onClickSave(View view) {
 		
 		if(!(Boolean) mSleepLogHelper.queryLog(mAsleepTime).get("wasNap"))
-			mSleepLogHelper.updateConcentration(mAsleepTime, "Level "+String.valueOf(mConcentrationBar.getRating()));
+			mSleepLogHelper.updateConcentration(mAsleepTime, (String)mconcentration_spinner.getSelectedItem());
 			
 		mSleepLogHelper.updateRating(mAsleepTime, (int) mRatingBar.getRating());
 		mSleepLogHelper.updateComments(mAsleepTime, mCommentBox.getText()

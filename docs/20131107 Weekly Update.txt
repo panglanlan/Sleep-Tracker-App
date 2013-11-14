@@ -1,0 +1,65 @@
+SLEEPTRACKER
+Status Update for Week of 11/4: Second Iteration
+
+=> Goals for the iteration (as agreed upon at the planning meeting):
+1. Bug/crash fixes (ONGOING)
+
+2. Implement User Profile creation and modification (COMPLETED)
+ a) Allow profile creation (COMPLETED)
+ b) Implement user profile modification (COMPLETED)
+
+3. Implement more comprehensive testing framework (ONGOING)
+
+4. Implement concentration, fatigue and productivity self-assessment (COMPLETED)
+a) Allow users to enter self-assessment ratings for a given day (COMPLETED)
+b) Allow modification of self-assessment ratings (COMPLETED)
+
+5. Iterate on User Interface design (ONGOING)
+a) Update application-wide color scheme to be more yellow, less orange
+b) Update chart color scheme to be clearer (ONGOING)
+c) Update SHS logo to new design (COMPLETED)
+
+6. Filter sleep tips based on user profile, if available, as well as collected
+data (ONGOING)
+
+7. Automatic logging of naps based on time of day that sleep begins (COMPLETED)
+
+=> Goals added since kick-off meeting:
+2. c) Add ability to view and modify user profile quickly from any screen in
+the application (ONGOING)
+
+5. d) Improve User Interface on older Android devices (ONGOING)
+
+8. Include additional and Penn-specific sleep tips (COMPLETED)
+
+=> Progress Update for week of 11/4:
+-  Finished user profile creation and modification implementation
+ Target goal: 2a), 2b)
+
+- Added more comprehensive tests
+ Target goal: 3)
+
+- Implemented ability to view and modify concentration self-assessment when
+viewing logged data for a given day
+ Target goal: 4a), 4b)
+
+- Updated logo and application icon
+ Target goal: 5c)
+
+- Implemented automatic logging of naps vs sleep based on time of day
+(10pm - 6am: Sleep, 8am - 8pm: Nap, otherwise, prompt user to select)
+ Target goal: 7)
+
+- Added Penn-specific sleep tips to the database
+ Target goal: 8)
+
+=> Next Steps:
+- Select sleep tips to be displayed from the database based on attributes of
+the user's profile and data collected
+ Target goal: 6)
+
+- User interface improvements
+ Target goal: 5a), 5b), 5c), 5d)
+
+- Testing and documentation of new functionality
+ Target goal: 1), 3)

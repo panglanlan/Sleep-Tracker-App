@@ -66,5 +66,14 @@
 	        android:textSize="20sp"
 	        android:textColor="@color/off_white" 
 	        android:onClick="onClickGraph" />
+	    <Button
+	        android:id="@+id/profileViewButton"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/profile_view"
+	        android:textSize="20sp"
+	        android:textColor="@color/off_white" 
+	        android:onClick="onClickProfile"/>
 	</LinearLayout>
 </LinearLayout>

@@ -22,6 +22,7 @@
     
     <!--  Profile strings -->
     <string name="profile_action">Profile</string>
+    <string name="profile_view">View Profile</string>
     <string name="save_profile">Save profile</string>
     <string name="cancel_profile">Cancel</string>
     <string name="profile_title">Edit User Profile</string>
