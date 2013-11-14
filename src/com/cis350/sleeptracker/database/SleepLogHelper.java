@@ -134,6 +134,12 @@ public class SleepLogHelper extends SleepTrackerDatabase {
 		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
 	}
 	
+	public boolean updateSleepType(long asleepTime, String sleepType){
+		ContentValues values = new ContentValues();
+		values.put(ITEM_TYPE_OF_SLEEP,sleepType);
+		String whereClause = ASLEEP_TIME + "=" + asleepTime;
+		return (mDb.update(TABLE_NAME, values, whereClause, null) > 0);
+	}
 	
 	public boolean updateAsleepTime(long asleepTime, long newAsleepTime) {
 		ContentValues values = new ContentValues();

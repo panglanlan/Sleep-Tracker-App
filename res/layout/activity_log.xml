@@ -84,6 +84,26 @@
 			        android:onClick="onClickEditWake" />
 		    </LinearLayout>
 		    
+		     <TextView
+		    	    android:id="@+id/sleeptype_header"
+		    		android:layout_width="wrap_content"
+		    		android:layout_height="wrap_content"
+		    		android:textSize="25sp"
+		    		android:paddingLeft="10dip"
+		    		android:text="@string/concentration_header"
+		    		android:textColor="@color/off_white" />
+		    
+		     <LinearLayout
+				android:orientation="horizontal" 
+		    	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content" 
+		    	android:paddingTop="10dip">
+	      		<Spinner
+   					android:id="@+id/sleeptype_spinner"
+   					android:layout_width="fill_parent"
+   					android:paddingRight="10dip"
+   					android:layout_height="wrap_content" />
+ 			</LinearLayout>
 		   
 		    <View
 		        android:layout_width="match_parent"
